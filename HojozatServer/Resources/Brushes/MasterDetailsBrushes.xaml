@@ -1,0 +1,46 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Brushes">
+
+    <!--The background color for the pane and details of MasterDetails in light theme-->
+    <Color x:Key="MasterPaneBackgroundColorLight">#E4E4E4</Color>
+    <Color x:Key="DetailsBackgroundColorLight">#E4E4E4</Color>
+    <Color x:Key="MasterPaneBorderColorLight">#5D5D5D</Color>
+    <Color x:Key="DetailsBorderColorLight">#5D5D5D</Color>
+    <Color x:Key="MasterPaneHeaderBackgroundColorLight">#A0A0A0</Color>
+    <Color x:Key="DetailsHeaderBackgroundColorLight">#A0A0A0</Color>
+
+
+
+    <!--The background color for the pane and details of MasterDetails in dark theme-->
+    <Color x:Key="MasterPaneBackgroundColorDark">#151515</Color>
+    <Color x:Key="DetailsBackgroundColorDark">#151515</Color>
+    <Color x:Key="MasterPaneBorderColorDark">#0E0E0E</Color>
+    <Color x:Key="DetailsBorderColorDark">#0E0E0E</Color>
+    <Color x:Key="MasterPaneHeaderBackgroundColorDark">#242424</Color>
+    <Color x:Key="DetailsHeaderBackgroundColorDark">#242424</Color>
+
+
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="MasterPaneBackgroundSolidColorBrush" Color="{StaticResource MasterPaneBackgroundColorLight}"/>
+            <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorLight}"/>
+            <SolidColorBrush x:Key="MasterPaneBorderSolidColorBrush" Color="{StaticResource MasterPaneBorderColorLight}"/>
+            <SolidColorBrush x:Key="DetailsBorderSolidColorBrush" Color="{StaticResource DetailsBorderColorLight}"/>
+            <SolidColorBrush x:Key="MasterPaneHeaderBackgroundSolidColorBrush" Color="{StaticResource MasterPaneHeaderBackgroundColorLight}"/>
+            <SolidColorBrush x:Key="DetailsHeaderBackgroundSolidColorBrush" Color="{StaticResource DetailsHeaderBackgroundColorLight}"/>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="MasterPaneBackgroundSolidColorBrush" Color="{StaticResource MasterPaneBackgroundColorDark}"/>
+            <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorDark}"/>
+            <SolidColorBrush x:Key="MasterPaneBorderSolidColorBrush" Color="{StaticResource MasterPaneBorderColorDark}"/>
+            <SolidColorBrush x:Key="DetailsBorderSolidColorBrush" Color="{StaticResource DetailsBorderColorDark}"/>
+            <SolidColorBrush x:Key="MasterPaneHeaderBackgroundSolidColorBrush" Color="{StaticResource MasterPaneHeaderBackgroundColorDark}"/>
+            <SolidColorBrush x:Key="DetailsHeaderBackgroundSolidColorBrush" Color="{StaticResource DetailsHeaderBackgroundColorDark}"/>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+    
+</ResourceDictionary>

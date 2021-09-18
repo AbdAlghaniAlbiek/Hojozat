@@ -1,0 +1,1138 @@
+﻿<Page
+    x:Class="HojozatServer.Views.DeviceFamily_Desktop.BrandsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Views.DeviceFamily_Desktop"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:models="using:HojozatServer.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:conv="using:HojozatServer.Converters" xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loading="Page_Loading">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/Icons/BrandsViewIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/ControlsBrushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <conv:DateToStringConverter x:Key="DateToStringConv"></conv:DateToStringConverter>
+            <conv:VerifiedConverter x:Key="VeriConv"></conv:VerifiedConverter>
+
+            <Color x:Key="DetailsBackgroundColorLight">#E4E4E4</Color>
+            <Color x:Key="DetailsBackgroundColorDark">#151515</Color>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorLight}"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorDark}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+
+        <controls:MasterDetailsView x:Name="brandsMasterDetails"
+                                    Style="{StaticResource CustomPaneMasterDetailsStyle}"
+                                    ItemContainerStyle="{StaticResource GridViewItemStyle}"
+                                    SelectionChanged="brandsMasterDetails_SelectionChanged">
+            
+            <!--The content of details when no selection on any item in the master-->
+            <controls:MasterDetailsView.NoSelectionContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                        <!--The Image of no brand details-->
+                        <Image Style="{StaticResource EmptyDetailsImageStyle}"
+                               Source="{StaticResource EmptyBrandDetailsImage}">
+                        </Image>
+
+                        <!--text explain to the user what he must do (Enter on any country to see the cities)-->
+                        <TextBlock x:Uid="/BrandsViewStrings/txtEmptyBrandDetails"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"
+                                   Margin="0 20 0 0"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.NoSelectionContentTemplate>
+
+            <!--The template for all items in master section-->
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate x:DataType="models:Brand">
+                    <StackPanel 
+                        Background="Transparent"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Width="140"
+                        Height="160">
+
+                        <!--Image of the user-->
+                        <controls:ImageEx 
+                            Style="{StaticResource ItemImageExStyle}"
+                            HorizontalAlignment="Center"
+                            Margin="0 20 0 0"
+                            CornerRadius="40">
+                            <controls:ImageEx.Source>
+                                <BitmapImage UriSource="{x:Bind ImagePath}"/>
+                            </controls:ImageEx.Source>
+                        </controls:ImageEx>
+
+                        <!--Name of the user-->
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                   Margin="0 32 0 0"
+                                   HorizontalAlignment="Center"
+                                   Text="{x:Bind Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.ItemTemplate>
+
+            <!-- of master's header for making search for brands-->
+            <controls:MasterDetailsView.MasterHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+
+                        <StackPanel Orientation="Horizontal" Margin="40 0 0 8">
+                            <FontIcon x:Name="networkIssueIcon"
+                                    Style="{StaticResource CaptionFontIconStyle}"
+                                    Glyph="{StaticResource NetworkIssueIcon}"
+                                    HorizontalAlignment="Left"
+                                    Grid.Row="2"
+                                    Margin="20 10 0 0"
+                                    Visibility="Collapsed"
+                                    VerticalAlignment="Top"
+                                    Foreground="IndianRed"
+                                    extensions:VisualExtensions.CenterPoint="50,50,0">
+
+                                <animations:Implicit.ShowAnimations>
+                                    <animations:OpacityAnimation From="0" To="1" Duration="0:0:1"/>
+                                </animations:Implicit.ShowAnimations>
+
+                                <animations:Implicit.HideAnimations>
+                                    <animations:OpacityAnimation To="0" Duration="0:0:0.5"/>
+                                </animations:Implicit.HideAnimations>
+
+                            </FontIcon>
+                            <TextBlock x:Name="txtNetworkIssue"
+                                   x:Uid="/MainViewStrings/txtNetworkIssueMessage"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Grid.Row="2"
+                                   Margin="8 8 0 0"
+                                   VerticalAlignment="Top"
+                                   Foreground="IndianRed"
+                                   Visibility="Collapsed"
+                                   extensions:VisualExtensions.CenterPoint="50,50,0">
+                                   <animations:Implicit.ShowAnimations>
+                                       <animations:OpacityAnimation From="0" To="1" Duration="0:0:1"/>
+                                   </animations:Implicit.ShowAnimations>
+                        
+                                   <animations:Implicit.HideAnimations>
+                                       <animations:OpacityAnimation To="0" Duration="0:0:0.5"/>
+                                   </animations:Implicit.HideAnimations>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                        Margin="20 0 0 0 ">
+                            <Image Style="{StaticResource TitleImageStyle}"
+                                       Source="{StaticResource BrandSearch}"/>
+
+                            <AutoSuggestBox x:Name="txtSearchBrands"
+                                        Grid.Column="1"
+                                        Width="252"
+                                        x:Uid="/BrandsViewStrings/txtSearchBrands"
+                                        BorderThickness="0 0 0 2"
+                                        CornerRadius="2"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Margin="20 0 0 0"
+                                        Background="Transparent"
+                                        QuerySubmitted="txtSearchBrands_QuerySubmitted"
+                                        KeyUp="txtSearchBrands_KeyUp">
+                            </AutoSuggestBox>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </DataTemplate>
+            </controls:MasterDetailsView.MasterHeaderTemplate>
+
+            <!--The template for what details will be have-->
+            <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <ScrollViewer>
+                            <StackPanel x:Name="mainBrandDetails"
+                                        Orientation="Vertical"
+                                        Style="{StaticResource MainStackPanelDetailsStyle}">
+
+                                <!--Create object and make properties' of controls bound from it (User Details data)-->
+                                <StackPanel.DataContext>
+                                    <models:BrandDetails></models:BrandDetails>
+                                </StackPanel.DataContext>
+
+                                <!--this stackpanel contains on brand's image and profile information-->
+                                <Grid x:Name="brandProfileContainer" 
+                                      Style="{StaticResource DetailsGridStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Contains's on brand name and image and profile data-->
+                                    <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal">
+
+                                        <!--Image and name of brand-->
+                                        <StackPanel Orientation="Vertical">
+                                            <controls:ImageEx Style="{StaticResource ProfileImageExStyle}"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      CornerRadius="200"
+                                                      Margin="0 0 28 0">
+                                                <controls:ImageEx.Source>
+                                                    <BitmapImage UriSource="{Binding BrandProfile.ImagePath}"/>
+                                                </controls:ImageEx.Source>
+                                            </controls:ImageEx>
+
+                                            <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                                       Margin="0 20 28 0"
+                                                       HorizontalAlignment="Center"
+                                                       Text="{Binding BrandProfile.Name}"/>
+
+                                        </StackPanel>
+
+                                        <!--Brand's profile data (doesn't contains on description)-->
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!--Title of this section (Profile)-->
+                                            <StackPanel Grid.Row="0"
+                                                Orientation="Horizontal">
+
+                                                <Image Style="{StaticResource TitleImageStyle}"
+                                                       Source="{StaticResource BrandProfile}"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtProfile"
+                                                           Style="{StaticResource SubtitleTextBlockStyle}"
+                                                           Margin="12 0 0 0"/>
+                                            </StackPanel>
+
+                                            <!--Contains on user profile information-->
+                                            <Grid Grid.Row="1"
+                                                 Margin="0 20 0 0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--Name of user-->
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource BrandManagerName}"
+                                                  Grid.Row="0"
+                                                  Grid.Column="0"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtManagerName"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Margin="12 0 0 0"/>
+                                                <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="0"
+                                                  Grid.Column="2"
+                                                  Text="{Binding BrandProfile.ManagerName}"
+                                                  Margin="12 0 0 0"/>
+
+                                                <!--email of user-->
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource BrandEmail}"
+                                                  Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtEmail"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text="Email: "
+                                                   Margin="12 32 0 0"/>
+                                                <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   Text="{Binding BrandProfile.Email}"
+                                                   Margin="12 32 0 0"/>
+
+                                                <!--Phone numer of user-->
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource BrandPhoneNumber}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtPhoneNumber"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                                <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="2"
+                                                  Text="{Binding BrandProfile.PhoneNumber}"
+                                                  Margin="12 32 0 0"/>
+
+                                                <!--Date join of user-->
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource BrandDateJoin}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtDateJoin"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                                <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="2"
+                                                  Text="{Binding BrandProfile.DateJoin,Converter={StaticResource DateToStringConv}}"
+                                                  Margin="12 32 0 0"/>
+
+                                                <!--Verified status of user-->
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource BrandVerified}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtVerified"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                                <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="2"
+                                                  Text="{Binding BrandProfile.Verified, Converter={StaticResource VeriConv}}"
+                                                  Margin="12 32 0 0"/>
+                                            </Grid>
+                                        </Grid>
+
+                                    </StackPanel>
+
+                                    <!--Brand's Slogan-->
+                                    <Grid Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--Title of this section (Slogan)-->
+                                        <StackPanel Orientation="Horizontal"
+                                                     Grid.Row="0"
+                                                    Margin="0 20 0 0">
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                      Glyph="{StaticResource BrandSlogan}"/>
+                                            <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       x:Uid="/BrandsViewStrings/txtSlogan"
+                                                       Margin="12 0 0 0"/>
+                                        </StackPanel>
+
+                                        <!--Slogan text-->
+                                        <TextBlock Grid.Row="1"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   FontStyle="Italic"
+                                                   Text="{Binding BrandProfile.Slogan}"
+                                                   Margin="28 16 0 0"/>
+                                    </Grid>
+
+                                    <!--Brand's Description-->
+                                    <Grid Grid.Row="2"
+                                          Margin="0 20 0 0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!--Title of this section (Description)-->
+                                        <StackPanel Orientation="Horizontal"
+                                                     Grid.Row="0">
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                      Glyph="{StaticResource BrandDescription}"/>
+                                            <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       x:Uid="/BrandsViewStrings/txtDescription"
+                                                       Margin="12 0 0 0"/>
+                                        </StackPanel>
+
+                                        <!--Description text-->
+                                        <TextBlock Grid.Row="1"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Text="{Binding BrandProfile.Description}"
+                                                   Margin="28 16 0 0"/>
+                                    </Grid>
+                                </Grid>
+
+                                <!--Contains on the location of this brand on map-->
+                                <Grid Style="{StaticResource DetailsGridStyle}"
+                                      Padding="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Location header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                                Margin="16 8 16 0"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Stretch">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                               Source="{StaticResource BrandLocation}"/>
+                                        <TextBlock x:Uid="/BrandsViewStrings/txtBrandLocation"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                    </StackPanel>
+
+                                     <!--refers to location of this brand-->
+                                    <Grid HorizontalAlignment="Stretch"
+                                          Grid.Row="1"
+                                          Height="300"
+                                          Margin="0 20 0 0"
+                                          CornerRadius="20 20 0 0"
+                                          Background="{ThemeResource DetailsBackgroundSolidColorBrush}">
+
+                                    </Grid>
+                                </Grid>
+
+                                <!--Contains on Charts of booking and payment for current and last year and Average Booking and 
+                                payments per month and year and the total for both-->
+                                <Grid Style="{StaticResource DetailsGridStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Activity header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Stretch">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                           Source="{StaticResource BrandActivity}"/>
+                                        <TextBlock x:Uid="/BrandsViewStrings/txtActivity"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                    </StackPanel>
+
+                                    <!--Charts for Bookings and payments for current and last year-->
+                                    <Pivot  Margin="0 20 0 0" 
+                                            HorizontalAlignment="Stretch"
+                                            Grid.Row="1">
+
+                                        <!--Bookings Averages chart section-->
+                                        <PivotItem>
+                                            <PivotItem.Header>
+                                                <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                           x:Uid="/BrandsViewStrings/txtBookings"/>
+                                            </PivotItem.Header>
+
+                                            <ScrollViewer
+                                                  HorizontalScrollMode="Enabled"
+                                                  HorizontalScrollBarVisibility="Auto"
+                                                  IsVerticalRailEnabled="False"
+                                                  VerticalScrollBarVisibility="Disabled">
+                                                <StackPanel 
+                                                       HorizontalAlignment="Stretch"
+                                                       Orientation="Horizontal"
+                                                       Margin="0 20 0 0">
+
+                                                    <!--User activty of bookings for currunt year-->
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock x:Uid="/BrandsViewStrings/txtCurrentYear"
+                                                             Style="{StaticResource BodyTextBlockStyle}"
+                                                              Margin="8 0 0 0">
+                                                        </TextBlock>
+
+                                                        <telerik:RadCartesianChart x:Name="brandActivityCurrentYearBookings" 
+                                                                           PaletteName="DefaultDark"
+                                                                           Width="320"
+                                                                           Height="260"
+                                                                           Margin="0 12 0 0">
+                                                            <telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:CategoricalAxis/>
+                                                            </telerik:RadCartesianChart.HorizontalAxis>
+                                                            <telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:LinearAxis/>
+                                                            </telerik:RadCartesianChart.VerticalAxis>
+                                                            <telerik:RadCartesianChart.Grid>
+                                                                <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                            </telerik:RadCartesianChart.Grid>
+
+                                                            <telerik:SplineSeries 
+                                                                      ItemsSource="{Binding BrandActivity.BrandActivityCurrentYear}"
+                                                                      CombineMode="Stack">
+                                                                <telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Bookings"/>
+                                                                </telerik:SplineSeries.ValueBinding>
+                                                                <telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                </telerik:SplineSeries.CategoryBinding>
+                                                                <telerik:SplineSeries.PointTemplate>
+                                                                    <DataTemplate>
+                                                                        <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                                                    </DataTemplate>
+                                                                </telerik:SplineSeries.PointTemplate>
+                                                            </telerik:SplineSeries>
+
+                                                        </telerik:RadCartesianChart>
+                                                    </StackPanel>
+
+                                                    <!--User activty of bookings for last year-->
+                                                    <StackPanel Orientation="Vertical"
+                                                        Margin="24 0 0 0">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock x:Uid="/BrandsViewStrings/txtLastYear"
+                                                                      Style="{StaticResource BodyTextBlockStyle}">
+                                                            </TextBlock>
+
+                                                            <telerik:RadCartesianChart x:Name="brandActivityLastYearBookings" 
+                                                                                   PaletteName="DefaultDark"
+                                                                                   Width="300"
+                                                                                   Height="260"
+                                                                                   Margin="0 12 0 0">
+
+                                                                <telerik:RadCartesianChart.HorizontalAxis>
+                                                                    <telerik:CategoricalAxis/>
+                                                                </telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:RadCartesianChart.VerticalAxis>
+                                                                    <telerik:LinearAxis/>
+                                                                </telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:RadCartesianChart.Grid>
+                                                                    <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                                </telerik:RadCartesianChart.Grid>
+
+                                                                <telerik:SplineSeries
+                                                                      ItemsSource="{Binding BrandActivity.BrandActivityLastYear}" 
+                                                                      CombineMode="Stack">
+                                                                    <telerik:SplineSeries.ValueBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Bookings"/>
+                                                                    </telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:SplineSeries.CategoryBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                    </telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:SplineSeries.PointTemplate>
+                                                                        <DataTemplate>
+                                                                            <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="Orange"/>
+                                                                        </DataTemplate>
+                                                                    </telerik:SplineSeries.PointTemplate>
+                                                                </telerik:SplineSeries>
+
+                                                            </telerik:RadCartesianChart>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ScrollViewer>
+
+                                        </PivotItem>
+
+                                        <PivotItem>
+                                            <PivotItem.Header>
+                                                <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                            x:Uid="/BrandsViewStrings/txtPayments"/>
+                                            </PivotItem.Header>
+
+                                            <ScrollViewer
+                                                  HorizontalScrollMode="Enabled"
+                                                  VerticalScrollBarVisibility="Disabled">
+                                                <StackPanel
+                                                       HorizontalAlignment="Stretch"
+                                                       Orientation="Horizontal"
+                                                       Margin="0 20 0 0">
+
+                                                    <!--User activty of bookings for currunt year-->
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock x:Uid="/BrandsViewStrings/txtCurrentYear"
+                                                             Style="{StaticResource BodyTextBlockStyle}"
+                                                              Margin="8 0 0 0">
+                                                        </TextBlock>
+
+                                                        <telerik:RadCartesianChart x:Name="brandActivityCurrentYearPayments" 
+                                                                           PaletteName="DefaultDark"
+                                                                           Width="300"
+                                                                           Height="260"
+                                                                           Margin="0 12 0 0">
+                                                            <telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:CategoricalAxis/>
+                                                            </telerik:RadCartesianChart.HorizontalAxis>
+                                                            <telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:LinearAxis/>
+                                                            </telerik:RadCartesianChart.VerticalAxis>
+                                                            <telerik:RadCartesianChart.Grid>
+                                                                <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                            </telerik:RadCartesianChart.Grid>
+
+                                                            <telerik:SplineSeries 
+                                                                      ItemsSource="{Binding BrandActivity.BrandActivityCurrentYear}"
+                                                                      CombineMode="Stack">
+                                                                <telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Payments"/>
+                                                                </telerik:SplineSeries.ValueBinding>
+                                                                <telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                </telerik:SplineSeries.CategoryBinding>
+                                                                <telerik:SplineSeries.PointTemplate>
+                                                                    <DataTemplate>
+                                                                        <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                                                    </DataTemplate>
+                                                                </telerik:SplineSeries.PointTemplate>
+                                                            </telerik:SplineSeries>
+
+                                                        </telerik:RadCartesianChart>
+                                                    </StackPanel>
+
+                                                    <!--User activty of bookings for last year-->
+                                                    <StackPanel Orientation="Vertical"
+                                                        Margin="24 0 0 0">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock x:Uid="/BrandsViewStrings/txtLastYear"
+                                                                      Style="{StaticResource BodyTextBlockStyle}">
+                                                            </TextBlock>
+
+                                                            <telerik:RadCartesianChart x:Name="brandActivityLastYearPayments" 
+                                                                                   PaletteName="DefaultDark"
+                                                                                   Width="300"
+                                                                                   Height="260"
+                                                                                   Margin="0 12 0 0">
+
+                                                                <telerik:RadCartesianChart.HorizontalAxis>
+                                                                    <telerik:CategoricalAxis/>
+                                                                </telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:RadCartesianChart.VerticalAxis>
+                                                                    <telerik:LinearAxis/>
+                                                                </telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:RadCartesianChart.Grid>
+                                                                    <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                                </telerik:RadCartesianChart.Grid>
+
+                                                                <telerik:SplineSeries 
+                                                                      ItemsSource="{Binding BrandActivity.BrandActivityLastYear}" 
+                                                                      CombineMode="Stack">
+                                                                    <telerik:SplineSeries.ValueBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Payments"/>
+                                                                    </telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:SplineSeries.CategoryBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                    </telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:SplineSeries.PointTemplate>
+                                                                        <DataTemplate>
+                                                                            <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="Orange"/>
+                                                                        </DataTemplate>
+                                                                    </telerik:SplineSeries.PointTemplate>
+                                                                </telerik:SplineSeries>
+
+                                                            </telerik:RadCartesianChart>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ScrollViewer>
+
+                                        </PivotItem>
+                                    </Pivot>
+
+
+                                    <!--average bookings and payments per month and per year and the total of both-->
+                                    <StackPanel Orientation="Vertical"
+                                            Grid.Row="2"
+                                            Margin="0 40 0 0">
+
+                                        <!--Title of this section (Averages Bookings and payments)-->
+                                        <TextBlock x:Uid="/BrandsViewStrings/txtBookingsPayments"
+                                               Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+
+                                        <!--Contains on Average bookings and payments per month and per year and total for both-->
+                                        <Grid Grid.Row="2"
+                                          Margin="0 32 0 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Bookings-->
+                                            <StackPanel Orientation="Horizontal"
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Margin="20 16 0 0">
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                      Glyph="{StaticResource BrandBooking}"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtBookings"
+                                                       Style="{StaticResource BodyTextBlockStyle}"
+                                                       Margin="12 0 0 0"/>
+                                            </StackPanel>
+
+                                            <!--Payments-->
+                                            <StackPanel Orientation="Horizontal"
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Margin="20 32 0 0">
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                      Glyph="{StaticResource BrandPayment}"/>
+                                                <TextBlock x:Uid="/BrandsViewStrings/txtPayments"
+                                                       Style="{StaticResource BodyTextBlockStyle}"
+                                                       Margin="12 0 0 0"/>
+                                            </StackPanel>
+
+                                            <!--Per Month-->
+                                            <TextBlock x:Uid="/BrandsViewStrings/txtPerMonth"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Margin="36 0 0 0"/>
+                                            <!--Per year-->
+                                            <TextBlock x:Uid="/BrandsViewStrings/txtPerYear"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="2"
+                                                   Margin="48 0 0 0"/>
+                                            <!--Total-->
+                                            <TextBlock x:Uid="/BrandsViewStrings/txtTotal"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="3"
+                                                   Margin="48 0 0 0"/>
+
+                                            <!--Bookings per month and per year and total-->
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.BookingsPerMonth}"
+                                                   Margin="36 16 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.BookingsPerYear}"
+                                                   Margin="48 16 0 0"/>
+                                            <TextBlock
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="3"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.TotalBookings}"
+                                                   Margin="48 16 0 0"/>
+
+                                            <!--Payments per month and per year and total-->
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.PaymentsPerMonth}"
+                                                   Margin="36 32 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="2"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.PaymentsPerYear}"
+                                                   Margin="48 32 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="3"
+                                                   Text="{Binding BrandActivity.BrandAveragesActivity.TotalPayments}"
+                                                   Margin="48 32 0 0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!--Users Feedback about this brand data-->
+                                <Grid Style="{StaticResource DetailsGridStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Users' feedback header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                           Source="{StaticResource UsersFeedback}"/>
+                                        <TextBlock x:Uid="/BrandsViewStrings/txtUsersFeedback"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                    </StackPanel>
+
+                                    <!--Comments && Ratings-->
+                                    <ScrollViewer Grid.Row="1"
+                                                  HorizontalScrollMode="Enabled"
+                                                  VerticalScrollBarVisibility="Disabled">
+                                        <StackPanel HorizontalAlignment="Stretch"
+                                                Orientation="Horizontal"
+                                                Margin="0 20 0 0">
+
+                                            <StackPanel.Resources>
+                                                <ResourceDictionary>
+                                                    <CollectionViewSource x:Key="CommentsCollection"
+                                                                          Source="{Binding UsersFeedback.HotelUsersComments}"
+                                                                          IsSourceGrouped="True"
+                                                                          ItemsPath="UsersComments"/>
+                                                </ResourceDictionary>
+                                            </StackPanel.Resources>
+
+                                            <!--Comments-->
+                                            <StackPanel Orientation="Vertical">
+
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                              Glyph="{StaticResource UsersComments}"/>
+                                                    <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       x:Uid="/BrandsViewStrings/txtUsersComments"
+                                                       Margin="12 0 0 0"/>
+                                                </StackPanel>
+
+                                                <ListView x:Name="usersComments"
+                                                      ItemsSource="{Binding Source={StaticResource CommentsCollection}}"
+                                                      SelectionMode="None"
+                                                      Width="360"
+                                                      Height="400"
+                                                      Margin="0 12 0 0">
+
+                                                    <ListView.GroupStyle>
+                                                        <GroupStyle>
+                                                            <GroupStyle.HeaderTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Margin="108 24 0 0" HorizontalAlignment="Center" Style="{StaticResource CaptionAltTextBlockStyle}" Text="{Binding HotelName}"/>
+                                                                </DataTemplate>
+                                                            </GroupStyle.HeaderTemplate>
+                                                        </GroupStyle>
+                                                    </ListView.GroupStyle>
+
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate x:DataType="models:UsersComment">
+                                                            <Grid Margin="0 0 0 12"
+                                                                  BorderBrush="Gray"
+                                                                  BorderThickness="0 0 0 0.5">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <!--User Name-->
+                                                                <StackPanel Orientation="Horizontal"
+                                                                            Grid.Row="0">
+
+                                                                    <TextBlock x:Uid="/BrandsViewStrings/txtUserName"
+                                                                       Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                       VerticalAlignment="Center"/>
+
+                                                                    <TextBlock Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                       Margin="4 0 0 0"
+                                                                       Text="{x:Bind UserName}"
+                                                                       Foreground="#FF9676B8"
+                                                                       VerticalAlignment="Center"/>
+                                                                </StackPanel>
+
+
+                                                                <!--Comment context-->
+                                                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                                                       Grid.Row="1"
+                                                                       HorizontalAlignment="Left"
+                                                                       Margin="0 8 0 0"
+                                                                       Text="{x:Bind Comment}"/>
+
+                                                                <!--Comment date-->
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0 8 0 0">
+                                                                    <TextBlock x:Uid="/BrandsViewStrings/txtCommentDate"
+                                                                               Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                               VerticalAlignment="Bottom"/>
+                                                                    <TextBlock Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                       Grid.Row="2"
+                                                                       Margin="4 0 0 0"
+                                                                       Text="{x:Bind CommentDate,Converter={StaticResource DateToStringConv}}"/>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                    
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                            </StackPanel>
+
+                                            <!--Ratings-->
+                                            <StackPanel x:Name="userRatingsCommentsContainer" 
+                                                    Orientation="Vertical"
+                                                    Margin="36 0 0 0">
+
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                              Glyph="{StaticResource UsersRatings}"/>
+                                                    <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       x:Uid="/BrandsViewStrings/txtUsersRatings"
+                                                       Margin="12 0 0 0"/>
+                                                </StackPanel>
+
+                                                <telerik:RadCartesianChart PaletteName="DefaultDark"
+                                                                           Margin="0 20 0 0"
+                                                                           Width="300"
+                                                                           Height="200">
+                                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                                        <telerik:LinearAxis/>
+                                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                                    <telerik:RadCartesianChart.VerticalAxis>
+                                                        <telerik:CategoricalAxis/>
+                                                    </telerik:RadCartesianChart.VerticalAxis>
+                                                    <telerik:RadCartesianChart.Grid>
+                                                        <telerik:CartesianChartGrid MajorLinesVisibility="X" StripLinesVisibility="X"/>
+                                                    </telerik:RadCartesianChart.Grid>
+                                                    <telerik:BarSeries ItemsSource="{Binding UsersFeedback.UsersRatings}">
+                                                        <telerik:BarSeries.ValueBinding>
+                                                            <telerik:PropertyNameDataPointBinding PropertyName="RatingValue"/>
+                                                        </telerik:BarSeries.ValueBinding>
+                                                        <telerik:BarSeries.CategoryBinding>
+                                                            <telerik:PropertyNameDataPointBinding PropertyName="Star"/>
+                                                        </telerik:BarSeries.CategoryBinding>
+                                                    </telerik:BarSeries>
+                                                </telerik:RadCartesianChart>
+
+                                                <!--Favourites and History-->
+                                                <StackPanel Orientation="Vertical"
+                                                            Grid.Row="2"
+                                                            Margin="0 48 0 0">
+
+                                                    <!--Header of this section (Favourites and history) -->
+                                                    <TextBlock 
+                                                          Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                          x:Uid="/BrandsViewStrings/txtUsersFavHis"
+                                                          Margin="12 0 0 0"/>
+
+                                                    <!--Favourites-->
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                                    Glyph="{StaticResource UsersFavourites}"
+                                                                    Margin="12 30 0 0"/>
+                                                        <TextBlock x:Uid="/BrandsViewStrings/txtUsersFavourites"
+                                                                 Style="{StaticResource BodyTextBlockStyle}"
+                                                                 Margin="12 28 0 0"/>
+
+                                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                                            Text="{Binding UsersFeedback.UsersFavouritesHistory.Favourites}"
+                                                            Margin="12 30 0 0"/>
+                                                    </StackPanel>
+
+
+                                                    <!--History-->
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                               Glyph="{StaticResource UsersHistory}"
+                                                               Margin="12 30 0 0"/>
+                                                        <TextBlock x:Uid="/BrandsViewStrings/txtUsersHistory"
+                                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                               Margin="12 28 0 0"/>
+
+                                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                                                   Text="{Binding UsersFeedback.UsersFavouritesHistory.History}"
+                                                                   Margin="12 30 0 0"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                            </StackPanel>
+
+                                        </StackPanel>
+                                    </ScrollViewer>
+
+                                   
+                                </Grid>
+
+                                <!--Brand's hotels-->
+                                <Grid Style="{StaticResource DetailsGridStyle}"
+                                      Padding="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Brand's hotels header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                                Margin="16 8 0 0"
+                                                Orientation="Horizontal">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                               Source="{StaticResource BrandHotels}"/>
+                                        <TextBlock x:Uid="/BrandsViewStrings/txtBrandHotels"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                        <TextBlock Margin="4 2 0 0"
+                                                   Style="{StaticResource BodyTextBlockStyle}">
+                                            <Run Text=" ("/><Run Text="{Binding BrandProfile.HotelsNumber}"/><Run Text=")"/>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!--List of brand's hotels-->
+                                    <ListView HorizontalAlignment="Stretch"
+                                              Grid.Row="1"
+                                              VerticalAlignment="Center"
+                                              Margin="0 20 0 0"
+                                              Height="600"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              ScrollViewer.HorizontalScrollMode="Disabled"
+                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                              ScrollViewer.VerticalScrollMode="Enabled"
+                                              ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                                              CornerRadius="20 20 0 0"
+                                              SelectionMode="None"
+                                              Background="{ThemeResource DetailsBackgroundSolidColorBrush}"
+                                              ItemsSource="{Binding BrandHotels}">
+
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:BrandHotels">
+                                                <Grid HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Stretch"
+                                                      Height="120">
+                                                    <Grid.Background>
+                                                        <ImageBrush ImageSource="{x:Bind ImagePath}" Stretch="UniformToFill"/>
+                                                    </Grid.Background>
+
+                                                    <StackPanel Orientation="Vertical"
+                                                                Background="Black"
+                                                                HorizontalAlignment="Stretch"
+                                                                VerticalAlignment="Stretch"
+                                                                Opacity="0.8">
+
+                                                        <!--Hotel name and stars-->
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    HorizontalAlignment="Left"
+                                                                    Margin="20 16 0 0">
+                                                            
+                                                            <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                                   HorizontalAlignment="Left"
+                                                                   Text="{Binding HotelName}"
+                                                                   Foreground="#FF9676B8"/>
+
+                                                            <RatingControl Margin="12 0 0 0" Value="{Binding Stars}" IsReadOnly="True"/>
+                                                        </StackPanel>
+                                                        
+
+                                                        <!--Hotel location-->
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    HorizontalAlignment="Left"
+                                                                    Margin="20 16 0 0">
+                                                            <FontIcon Style="{StaticResource CaptionFontIconStyle}"
+                                                                      Glyph="{StaticResource HotelLoaction}"
+                                                                      Foreground="White"/>
+                                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                                                                       x:Uid="/BrandsViewStrings/txtHotelLoaction"
+                                                                       Margin="8 0 0 0"
+                                                                       Foreground="White"/>
+                                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                                                                       Text="{Binding CityName}"
+                                                                       Margin="8 0 0 0"
+                                                                       Foreground="White"/>
+                                                        </StackPanel>
+
+                                                        <!--Hotel Rooms count-->
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    HorizontalAlignment="Left"
+                                                                    Margin="20 12 0 0">
+                                                            <FontIcon Style="{StaticResource CaptionFontIconStyle}"
+                                                                      Glyph="{StaticResource HotelRooms}"
+                                                                      Foreground="White"/>
+                                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                                                                       x:Uid="/BrandsViewStrings/txtHotelRooms"
+                                                                       Margin="8 0 0 0"
+                                                                       Foreground="White"/>
+                                                            <TextBlock Style="{StaticResource CaptionTextBlockStyle}"
+                                                                       Text="{Binding Rooms}"
+                                                                       Margin="8 0 0 0"
+                                                                       Foreground="White"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+
+                                        <ListView.ItemContainerTransitions>
+                                            <TransitionCollection>
+                                                <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                            </TransitionCollection>
+                                        </ListView.ItemContainerTransitions>
+                                    </ListView>
+
+                                </Grid>
+
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <controls:Loading x:Name="loadingBrandDetailsData"
+                                          Style="{StaticResource LoadingDataStyle}"/>
+
+                        <controls:Loading x:Name="networkingIssueConnDetails"
+                                          Style="{StaticResource LoadingNetworkIssueStyle}"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+
+            <!--Animation for items in master list-->
+            <controls:MasterDetailsView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </controls:MasterDetailsView.ItemContainerTransitions>
+
+        </controls:MasterDetailsView>
+
+        <controls:Loading x:Name="loadingBrandsData"
+                          Style="{StaticResource LoadingDataStyle}"/>
+
+        <controls:Loading x:Name="networkingIssueConnecting"
+                          Style="{StaticResource LoadingNetworkIssueStyle}"/>
+
+    </Grid>
+
+
+</Page>

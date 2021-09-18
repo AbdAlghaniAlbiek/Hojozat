@@ -1,0 +1,26 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Icons">
+
+
+    <x:String x:Key="WarningImage">ms-appx:///Assets/Images/LoginViewImages/Warning_20px.png</x:String>
+    <x:String x:Key="KeyImage">ms-appx:///Assets/Images/LoginViewImages/Key_300px.png</x:String>
+    <x:String x:Key="PasswordImage">ms-appx:///Assets/Images/LoginViewImages/Password_300px.png</x:String>
+    <x:String x:Key="DefenseImage">ms-appx:///Assets/Images/LoginViewImages/Defense_300px.png</x:String>
+
+    <x:String x:Key="NameIcon">&#xE77B;</x:String>
+    <x:String x:Key="EmailIcon">&#xE715;</x:String>
+    <x:String x:Key="PasswordIcon">&#xE8D7;</x:String>
+    <x:String x:Key="PhoneNumberIcon">&#xE717;</x:String>
+    <x:String x:Key="ErrorIcon">&#xEB90;</x:String>
+    <x:String x:Key="NetworkIssueIcon">&#xEB5E;</x:String>
+
+    <x:String x:Key="LockImage">ms-appx:///Assets/Images/LoginViewImages/Lock_100px.png</x:String>
+    <x:String x:Key="LockIcon">&#xE72E;</x:String>
+
+
+    <x:String x:Key="ProtectImage">ms-appx:///Assets/Images/LoginViewImages/Protect_100px.png</x:String>
+    <x:String x:Key="ContinueIcon">&#xE76C;</x:String>
+    
+</ResourceDictionary>

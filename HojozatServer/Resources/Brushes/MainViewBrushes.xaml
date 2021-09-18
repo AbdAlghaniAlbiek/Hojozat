@@ -1,0 +1,59 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Brushes">
+
+    
+    <!--Splite View Pane and header background in light theme-->
+    <Color x:Key="SplitViewPaneBackgroundColorLight">#FFFFFFFF</Color>
+    <Color x:Key="SplitViewPaneInactiveBackgroundColorLight">#FFFFFFFF</Color>
+    <Color x:Key="SplitViewHeaderBackgroundColorLight">#FFFFFFFF</Color>
+    <Color x:Key="SplitViewHeaderInactiveBackgroundColorLight">#FFFFFFFF</Color>
+    <Color x:Key="SplitViewHeaderBorderColorLight">#5D5D5D</Color>
+
+
+    <!--Splite View Pane and header background in dark theme-->
+    <Color x:Key="SplitViewPaneBackgroundColorDark">#FF242424</Color>
+    <Color x:Key="SplitViewPaneInactiveBackgroundColorDark">#FF242424</Color>
+    <Color x:Key="SplitViewHeaderBackgroundColorDark">#FF242424</Color>
+    <Color x:Key="SplitViewHeaderInactiveBackgroundColorDark">#FF242424</Color>
+    <Color x:Key="SplitViewHeaderBorderColorDark">#0E0E0E</Color>
+
+
+    <ResourceDictionary.ThemeDictionaries>
+        
+        <ResourceDictionary x:Key="Light">
+            <AcrylicBrush x:Key="SplitViewPaneBackgroundAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource SplitViewPaneBackgroundColorLight}"
+                          FallbackColor="{StaticResource SplitViewPaneInactiveBackgroundColorLight}"
+                          TintOpacity="0.6"/>
+            <AcrylicBrush x:Key="SplitViewHeaderBackgroundAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource SplitViewHeaderBackgroundColorLight}"
+                          FallbackColor="{StaticResource SplitViewHeaderInactiveBackgroundColorLight}"
+                          TintOpacity="0.6"/>
+            <SolidColorBrush x:Key="SplitViewHeaderBorderSolidColorBrush" 
+                             Color="{StaticResource SplitViewHeaderBorderColorLight}"/>
+            
+        </ResourceDictionary>
+
+        
+        <ResourceDictionary x:Key="Dark">
+            <AcrylicBrush x:Key="SplitViewPaneBackgroundAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource SplitViewPaneBackgroundColorDark}"
+                          FallbackColor="{StaticResource SplitViewPaneInactiveBackgroundColorDark}"
+                          TintOpacity="0.6"/>
+            <AcrylicBrush x:Key="SplitViewHeaderBackgroundAcrylicBrush"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource SplitViewHeaderBackgroundColorDark}"
+                          FallbackColor="{StaticResource SplitViewHeaderInactiveBackgroundColorDark}"
+                          TintOpacity="0.6"/>
+            <SolidColorBrush x:Key="SplitViewHeaderBorderSolidColorBrush" 
+                             Color="{StaticResource SplitViewHeaderBorderColorDark}"/>
+
+        </ResourceDictionary>
+        
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,144 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:contract6Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,6)"
+    xmlns:local="using:HojozatServer.Resources.Brushes">
+
+    <!--#region AutoSuggestBox brushes previously-->
+    
+    <!--<Color x:Key="AutoSuggestBoxForegroundColorLight">#000000</Color>
+    <Color x:Key="AutoSuggestBoxBackgroundColorLight">#FFFFFF</Color>
+    <Color x:Key="AutoSuggestBoxBorderColorLight">#7D7D7D</Color>
+    <Color x:Key="AutoSuggestBoxBorderColorFocusedLight">#9676B8</Color>
+    
+    <Color x:Key="AutoSuggestBoxDeleteButtonForegroundColorLight">#000000</Color>
+    <Color x:Key="AutoSuggestBoxDeleteButtonBackgroundColorPressedLight">#9676B8</Color>
+
+    <Color x:Key="AutoSuggestBoxQueryButtonForegroundColorLight">#000000</Color>
+    <Color x:Key="AutoSuggestBoxQueryButtonBackgroundColorPressedLight">#9676B8</Color>
+
+
+
+    <Color x:Key="AutoSuggestBoxForegroundColorDark">#FFFFFF</Color>
+    <Color x:Key="AutoSuggestBoxBackgroundColorDark">#333333</Color>
+    <Color x:Key="AutoSuggestBoxBorderColorDark">#0E0E0E</Color>
+    <Color x:Key="AutoSuggestBoxBorderColorFocusedDark">#9676B8</Color>
+    
+    <Color x:Key="AutoSuggestBoxDeleteButtonForegroundColorDark">#FFFFFF</Color>
+    <Color x:Key="AutoSuggestBoxDeleteButtonBackgroundColorPressedDark">#9676B8</Color>
+
+    <Color x:Key="AutoSuggestBoxQueryButtonForegroundColorDark">#FFFFFF</Color>
+    <Color x:Key="AutoSuggestBoxQueryButtonBackgroundColorPressedDark">#9676B8</Color>
+
+
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="AutoSuggestBoxForegourndSolidColorBrush" Color="{StaticResource AutoSuggestBoxForegroundColorLight}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBackgroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxBackgroundColorLight}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBorderSolidColorBrush" Color="{StaticResource AutoSuggestBoxBorderColorLight}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBorderSolidColorBrushFocused" Color="{StaticResource AutoSuggestBoxBorderColorFocusedLight}"/>
+
+            <SolidColorBrush x:Key="AutoSuggestBoxDeleteButtonForegroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxDeleteButtonForegroundColorLight}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxDeleteButtonBackgroundSolidColorBrushPressed" Color="{StaticResource AutoSuggestBoxDeleteButtonBackgroundColorPressedLight}"/>
+
+            <SolidColorBrush x:Key="AutoSuggestBoxQueryButtonForegroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxQueryButtonForegroundColorLight}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxQueryButtonBackgroundSolidColorBrushPressed" Color="{StaticResource AutoSuggestBoxQueryButtonBackgroundColorPressedLight}"/>
+            
+            <StaticResource x:Key="AutoSuggestBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />
+            <x:Double x:Key="AutoSuggestBoxIconFontSize">12</x:Double>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="AutoSuggestBoxForegourndSolidColorBrush" Color="{StaticResource AutoSuggestBoxForegroundColorDark}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBackgroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxBackgroundColorDark}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBorderSolidColorBrush" Color="{StaticResource AutoSuggestBoxBorderColorDark}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxBorderSolidColorBrushFocused" Color="{StaticResource AutoSuggestBoxBorderColorFocusedDark}"/>
+            
+            <SolidColorBrush x:Key="AutoSuggestBoxDeleteButtonForegroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxDeleteButtonForegroundColorDark}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxDeleteButtonBackgroundSolidColorBrushPressed" Color="{StaticResource AutoSuggestBoxDeleteButtonBackgroundColorPressedDark}"/>
+
+            <SolidColorBrush x:Key="AutoSuggestBoxQueryButtonForegroundSolidColorBrush" Color="{StaticResource AutoSuggestBoxQueryButtonForegroundColorDark}"/>
+            <SolidColorBrush x:Key="AutoSuggestBoxQueryButtonBackgroundSolidColorBrushPressed" Color="{StaticResource AutoSuggestBoxQueryButtonBackgroundColorPressedDark}"/>
+            
+            <StaticResource x:Key="AutoSuggestBoxLightDismissOverlayBackground" ResourceKey="SystemControlPageBackgroundMediumAltMediumBrush" />
+            <x:Double x:Key="AutoSuggestBoxIconFontSize">12</x:Double>
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>-->
+
+    <!--#endregion-->
+
+    <!--<ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <ResourceDictionary.MergedDictionaries>
+                <ColorPaletteResources Accent="#FF9676B8" AltHigh="#FF000000" AltLow="#FF000000" AltMedium="#333333" AltMediumHigh="#FF000000" AltMediumLow="#FF000000" BaseHigh="#FFFFFFFF" BaseLow="#FF9676B8" BaseMedium="#FFCDB9E3" BaseMediumHigh="#FFDBCAEE" BaseMediumLow="#FFB298CE" ChromeAltLow="#FFDBCAEE" ChromeBlackHigh="#FFFFFFFF" ChromeBlackLow="#FFDBCAEE" ChromeBlackMedium="#FFFFFFFF" ChromeBlackMediumLow="#FF000000" ChromeDisabledHigh="#FF9676B8" ChromeDisabledLow="#FFCDB9E3" ChromeGray="#FFBFA8D8" ChromeHigh="#FFBFA8D8" ChromeLow="#FF502F77" ChromeMedium="#FF614187" ChromeMediumLow="#FF8464A8" ChromeWhite="#333333" ListLow="#FF614187" ListMedium="#FF9676B8" />
+                <ResourceDictionary>
+                    <Color x:Key="SystemChromeAltMediumHighColor">#CC000000</Color>
+                    <Color x:Key="SystemChromeAltHighColor">#FF000000</Color>
+                    <Color x:Key="SystemRevealListLowColor">#FF614187</Color>
+                    <Color x:Key="SystemRevealListMediumColor">#FF9676B8</Color>
+                    <Color x:Key="RegionColor">#FF000000</Color>
+                    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <ResourceDictionary.MergedDictionaries>
+                <ColorPaletteResources Accent="#FF9676B8" AltHigh="#FFFFFFFF" AltLow="#FFFFFFFF" AltMedium="#FFFFFFFF" AltMediumHigh="#FFFFFFFF" AltMediumLow="#FFFFFFFF" BaseHigh="#FF000000" BaseLow="#FF9676B8" BaseMedium="#FF614187" BaseMediumHigh="#FF3E1D67" BaseMediumLow="#FF502F77" ChromeAltLow="#FF3E1D67" ChromeBlackHigh="#FF000000" ChromeBlackLow="#FF9676B8" ChromeBlackMedium="#FF3E1D67" ChromeBlackMediumLow="#FF614187" ChromeDisabledHigh="#FF9676B8" ChromeDisabledLow="#FF614187" ChromeGray="#FF502F77" ChromeHigh="#FF9676B8" ChromeLow="#FFDBCAEE" ChromeMedium="#FFCDB9E3" ChromeMediumLow="#FFDBCAEE" ChromeWhite="#FFFFFFFF" ListLow="#FFCDB9E3" ListMedium="#FF9676B8" />
+                <ResourceDictionary>
+                    <Color x:Key="SystemChromeAltMediumHighColor">#CCFFFFFF</Color>
+                    <Color x:Key="SystemChromeAltHighColor">#FFFFFFFF</Color>
+                    <Color x:Key="SystemRevealListLowColor">#FFCDB9E3</Color>
+                    <Color x:Key="SystemRevealListMediumColor">#FF9676B8</Color>
+                    <RevealBackgroundBrush x:Key="SystemControlHighlightListLowRevealBackgroundBrush" TargetTheme="Light" Color="{ThemeResource SystemRevealListMediumColor}" FallbackColor="{ StaticResource SystemListMediumColor}" />
+                    <Color x:Key="RegionColor">#FFFFFFFF</Color>
+                    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <StaticResource x:Key="RegionColor" ResourceKey="SystemColorWindowColor" />
+            <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>-->
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <ResourceDictionary.MergedDictionaries>
+                <ColorPaletteResources Accent="#FF9676B8" AltHigh="#FF000000" AltLow="#FF000000" AltMedium="#FF000000" AltMediumHigh="#FF000000" AltMediumLow="#FF000000" BaseHigh="#FFFFFFFF" BaseLow="#FF9676B8" BaseMedium="#FFCDB9E3" BaseMediumHigh="#FFDBCAEE" BaseMediumLow="#FFB298CE" ChromeAltLow="#FFDBCAEE" ChromeBlackHigh="#FF000000" ChromeBlackLow="#FFDBCAEE" ChromeBlackMedium="#FF000000" ChromeBlackMediumLow="#FF000000" ChromeDisabledHigh="#FF9676B8" ChromeDisabledLow="#FFCDB9E3" ChromeGray="#FFBFA8D8" ChromeHigh="#FFBFA8D8" ChromeLow="#FF502F77" ChromeMedium="#FF614187" ChromeMediumLow="#FF8464A8" ChromeWhite="#FFFFFFFF" ListLow="#FF614187" ListMedium="#FF9676B8" />
+                <ResourceDictionary>
+                    <Color x:Key="SystemChromeAltMediumHighColor">#CC000000</Color>
+                    <Color x:Key="SystemChromeAltHighColor">#FF000000</Color>
+                    <Color x:Key="SystemRevealListLowColor">#FF614187</Color>
+                    <Color x:Key="SystemRevealListMediumColor">#FF9676B8</Color>
+                    <Color x:Key="RegionColor">#FF000000</Color>
+                    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <ResourceDictionary.MergedDictionaries>
+                <ColorPaletteResources Accent="#FF9676B8" AltHigh="#FFFFFFFF" AltLow="#FFFFFFFF" AltMedium="#FFFFFFFF" AltMediumHigh="#FFFFFFFF" AltMediumLow="#FFFFFFFF" BaseHigh="#FF000000" BaseLow="#FF9676B8" BaseMedium="#FF614187" BaseMediumHigh="#FF3E1D67" BaseMediumLow="#FF502F77" ChromeAltLow="#FF3E1D67" ChromeBlackHigh="#FF000000" ChromeBlackLow="#FF9676B8" ChromeBlackMedium="#FF3E1D67" ChromeBlackMediumLow="#FF614187" ChromeDisabledHigh="#FF9676B8" ChromeDisabledLow="#FF614187" ChromeGray="#FF502F77" ChromeHigh="#FF9676B8" ChromeLow="#FFDBCAEE" ChromeMedium="#FFCDB9E3" ChromeMediumLow="#FFDBCAEE" ChromeWhite="#FFFFFFFF" ListLow="#FFCDB9E3" ListMedium="#FF9676B8" />
+                <ResourceDictionary>
+                    <Color x:Key="SystemChromeAltMediumHighColor">#CCFFFFFF</Color>
+                    <Color x:Key="SystemChromeAltHighColor">#FFFFFFFF</Color>
+                    <Color x:Key="SystemRevealListLowColor">#FFCDB9E3</Color>
+                    <Color x:Key="SystemRevealListMediumColor">#FF9676B8</Color>
+                    <RevealBackgroundBrush x:Key="SystemControlHighlightListLowRevealBackgroundBrush" TargetTheme="Light" Color="{ThemeResource SystemRevealListMediumColor}" FallbackColor="{ StaticResource SystemListMediumColor}" />
+                    <Color x:Key="RegionColor">#FFFFFFFF</Color>
+                    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <StaticResource x:Key="RegionColor" ResourceKey="SystemColorWindowColor" />
+            <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+
+
+
+</ResourceDictionary>

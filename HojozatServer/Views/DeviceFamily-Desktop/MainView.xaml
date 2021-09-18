@@ -1,0 +1,519 @@
+﻿<Page
+    x:Class="HojozatServer.Views.DeviceFamily_Desktop.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Views.DeviceFamily_Desktop"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/MainViewBrushes.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Icons/MainViewIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/ControlsBrushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--These colors for background of Exit Dialog which represent by code behind-->
+
+            <Color x:Key="DialogBackgroundColorLight">#E4E4E4</Color>
+            <Color x:Key="DialogBorderColorLight">#7D7D7D</Color>
+
+            <Color x:Key="DialogBackgroundColorDark">#151515</Color>
+            <Color x:Key="DialogBorderColorDark">#0E0E0E</Color>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="DialogBackgroundSolidColorBrush" Color="{StaticResource DialogBackgroundColorLight}"/>
+                    <SolidColorBrush x:Key="DialogBorderSolidColorBrush" Color="{StaticResource DialogBorderColorLight}"/>
+
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="DialogBackgroundSolidColorBrush" Color="{StaticResource DialogBackgroundColorDark}"/>
+                    <SolidColorBrush x:Key="DialogBorderSolidColorBrush" Color="{StaticResource DialogBorderColorDark}"/>
+
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <SplitView x:Name="splitViewMainNav"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   DisplayMode="CompactInline"
+                   PanePlacement="Left"
+                   PaneBackground="{ThemeResource SplitViewPaneBackgroundAcrylicBrush}"
+                   OpenPaneLength="260"
+                   CompactPaneLength="52"
+                   IsPaneOpen="True"
+                   PaneClosing="SplitViewMainNav_PaneClosing">
+
+            <SplitView.Pane>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--This button to go back to previous page in main content frame-->
+                    <Button x:Name="btnBack"
+                            Grid.Row="0"
+                            Visibility="Collapsed"
+                            Width="52"
+                            Height="52"
+                            VerticalAlignment="Top"
+                            BorderBrush="Transparent"
+                            FontSize="20"
+                            CornerRadius="0 0 90 0"
+                            Grid.ColumnSpan="2"
+                            Click="BtnBack_Click">
+                        <Button.Content>
+                            <FontIcon Glyph="{StaticResource BackIcon}"
+                                      FontSize="20"
+                                      Margin="0 0 12 4"/>
+                        </Button.Content>
+                    </Button>
+
+                    <!--Text block represent the name of project-->
+                    <TextBlock x:Name="txtProjectName"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               FontFamily="ms-appx:///Assets/Fonts/ProjectTitleFont/giddyupstd.otf#Giddyup Std"
+                               Style="{StaticResource HeaderTextBlockStyle}"
+                               Text="Hojozat"
+                               FontSize="60" Grid.Column="1" 
+                               Margin="44,20,0,0"/>
+
+                    <!--It's contain the buttons that navigate you from previous page to the target page-->
+                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+
+
+                            </Grid.RowDefinitions>
+
+                            <!--Button that navigate thr mainContentFrame ot Dashboard page-->
+                            <Button x:Name="btnNavDashboard"
+                                Grid.Row="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavDashboard_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 106 0">
+                                        <FontIcon Glyph="{StaticResource DashboardIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavDashboard"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+
+                            <!--Button that navigate thr mainContentFrame ot Brands page-->
+                            <Button x:Name="btnNavBrands"
+                                Grid.Row="1"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavBrands_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 134 0">
+                                        <FontIcon Glyph="{StaticResource BrandsIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavBrands"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button that navigate thr mainContentFrame ot Brands page-->
+                            <Button x:Name="btnNavHotels"
+                                Grid.Row="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavHotels_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 134 0">
+                                        <FontIcon Glyph="{StaticResource HotelsIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavHotels"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button that navigate thr mainContentFrame ot Users page-->
+                            <Button x:Name="btnNavUsers"
+                                Grid.Row="3"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavUsers_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 138 0">
+                                        <FontIcon Glyph="{StaticResource UsersIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavUsers"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                               Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button that navigate thr mainContentFrame ot Hotels page-->
+                            <Button x:Name="btnNavGlobalization"
+                                Grid.Row="4"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavGlobalization_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 92 0">
+                                        <FontIcon Glyph="{StaticResource GlobalizationIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavGlobalization"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                               Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button that navigate thr mainContentFrame ot Payments page--><!--
+                            <Button x:Name="btnNavPayments"
+                                Grid.Row="5"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavPayments_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 112 0">
+                                        <FontIcon Glyph="{StaticResource PaymentsIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavPayments"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            --><!--Button that navigate thr mainContentFrame ot Anatyics page--><!--
+                            <Button x:Name="btnNavAnalytics"
+                                Grid.Row="6"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                    Click="BtnNavAnalytics_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 114 0">
+                                        <FontIcon Glyph="{StaticResource AnalyieslIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavAnalytics"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>-->
+
+                            <!--Button that navigate thr mainContentFrame ot Settings page-->
+                            <Button x:Name="btnNavSettings"
+                                Grid.Row="5"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavSettings_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 124 0">
+                                        <FontIcon Glyph="{StaticResource SettingsIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavSettings"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button that navigate thr mainContentFrame ot Feedback page-->
+                            <Button x:Name="btnNavFeedback"
+                                Grid.Row="6"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="BtnNavFeedback_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 112 0">
+                                        <FontIcon Glyph="{StaticResource FeedbackIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavFeedback"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                               Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                            <!--Button represent a content dialog to ask you if you want to close this app-->
+                            <Button x:Name="btnNavExit"
+                                Grid.Row="7"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                    Click="btnNavExit_Click">
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal"
+                                            Margin="0 0 154 0">
+                                        <FontIcon Glyph="{StaticResource ExitIcon}" 
+                                              FontSize="16" 
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"/>
+                                        <TextBlock x:Uid="/MainViewStrings/txtBlockBtnNavExit"
+                                               Grid.Column="1"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                                Margin="28 0 0 0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+
+                        </Grid>
+                    </ScrollViewer>
+                </Grid>
+            </SplitView.Pane>
+
+            <SplitView.Content>
+                <Grid>
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="11*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Contains the header of split View(button that open and close the pane, 
+                         back button that will be visible in mobile mode and the name of page-->
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="0"
+                                Background="{ThemeResource SplitViewHeaderBackgroundAcrylicBrush}"
+                                BorderThickness="0 0 0 1"
+                                BorderBrush="{StaticResource SplitViewHeaderBorderSolidColorBrush}">
+
+                        <!--Back button that navigate the frame to previous page , it's only to mobile mode-->
+                        <Button x:Name="btnBackMobileMode"
+                            Visibility="Collapsed"
+                            Grid.Row="0"
+                            Style="{StaticResource ButtonRoundedStyle}"
+                            Width="44"
+                            Height="44"
+                            VerticalAlignment="Center"
+                            BorderBrush="Transparent"
+                            FontSize="20"
+                            Margin="8 0 0 0"
+                            Click="BtnBackMobileMode_Click"
+                            Grid.ColumnSpan="2">
+                            <Button.Content>
+                                <FontIcon Glyph="{StaticResource BackIcon}"
+                                          FontSize="20"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                            </Button.Content>
+                        </Button>
+
+                        <!--Button that open and close the pane of split view-->
+                        <Button x:Name="btnNavMenu"
+                                Style="{ThemeResource ButtonRevealStyle}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                Width="44"
+                                Height="44"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Margin="8 0 0 0"
+                                Click="BtnNavMenu_Click">
+                            <Button.Content>
+                                <FontIcon Glyph="{StaticResource MenuIcon}" 
+                                          Style="{StaticResource LargeFontIconStyle}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"/>
+                            </Button.Content>
+                        </Button>
+                       
+                        <!--show you the name of page-->
+                        <TextBlock x:Name="txtTitlePage"
+                                   x:Uid="/MainViewStrings/txtTitlePage"
+                                   Text="{x:Bind TitlePageName}"
+                                   Margin="8 0 0 0"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"
+                                   VerticalAlignment="Center"/>
+
+                    </StackPanel>
+
+                    <!--stack the pages inside it-->
+                    <Frame x:Name="mainContentFrame"
+                           Grid.Row="1"
+                           Navigated="MainContentFrame_Navigated">
+                        <Frame.ContentTransitions>
+                            <TransitionCollection>
+                                <NavigationThemeTransition  />
+                            </TransitionCollection>
+                        </Frame.ContentTransitions>
+
+                    </Frame>
+
+                </Grid>
+            </SplitView.Content>
+            
+        </SplitView>
+
+        <!--MainSplitView windows width states-->
+        <VisualStateManager.VisualStateGroups>
+
+            <VisualStateGroup x:Name="SplitViewStatesGroup">
+                
+                <!--Desktop state-->
+                <VisualState x:Name="SplitViewDesktopState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1008"/>
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="splitViewMainNav.DisplayMode" Value="CompactInline"/>
+                        <Setter Target="splitViewMainNav.IsPaneOpen" Value="True"/>
+                        <Setter Target="txtProjectName.Text" Value="Hojozat"/>
+                    </VisualState.Setters>
+
+                    <VisualState.Storyboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="txtProjectName"
+                                                           Storyboard.TargetProperty="Margin">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="44,20,0,0"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState.Storyboard>
+
+                </VisualState>
+
+                <!--Tablet state-->
+                <VisualState x:Name="SplitViewTabletState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640"/>
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="splitViewMainNav.DisplayMode" Value="CompactOverlay"/>
+                        <Setter Target="splitViewMainNav.IsPaneOpen" Value="False"/>
+                        <Setter Target="txtProjectName.Text" Value="H"/>
+                    </VisualState.Setters>
+
+                    <VisualState.Storyboard>
+                        <Storyboard >
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="txtProjectName"
+                                            Storyboard.TargetProperty="Margin">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="2,72,0,0"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState.Storyboard>
+
+                </VisualState>
+                
+                <!--Mobile state-->
+                <VisualState x:Name="SplitViewMobileState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1"/>
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="splitViewMainNav.DisplayMode" Value="Overlay"/>
+                        <Setter Target="splitViewMainNav.IsPaneOpen" Value="False"/>
+                        <Setter Target="txtProjectName.Text" Value="Hojozat"/>
+                    </VisualState.Setters>
+
+                    <VisualState.Storyboard>
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="txtProjectName"
+                                                                       Storyboard.TargetProperty="Margin">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="44,20,0,0"/>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState.Storyboard>
+
+                </VisualState>
+
+            </VisualStateGroup>
+
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>

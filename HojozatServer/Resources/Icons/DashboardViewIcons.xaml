@@ -1,0 +1,18 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Icons">
+
+    <x:String x:Key="DashboardActicity">ms-appx:///Assets/Images/DashboardViewImages/Activity_20px.png</x:String>
+    <x:String x:Key="DashboardAverageRegisteration">ms-appx:///Assets/Images/DashboardViewImages/Average_Registeration_20px.png</x:String>
+    <x:String x:Key="DashboardNewMember">ms-appx:///Assets/Images/DashboardViewImages/New_Memeber_20px.png</x:String>
+    <x:String x:Key="DashboardTopFourBrands">ms-appx:///Assets/Images/DashboardViewImages/Top_Four_Brands_20px.png</x:String>
+
+    <x:String x:Key="BrandIcon">&#xF094;</x:String>
+    <x:String x:Key="UserIcon">&#xE716;</x:String>
+    <x:String x:Key="ProfitsIcon">&#xE8EC;</x:String>
+    <x:String x:Key="BookingsIcon">&#xEB4E;</x:String>
+    <x:String x:Key="RefreshIcon">&#xE72C;</x:String>
+    <x:String x:Key="NetworkIssueIcon">&#xEB5E;</x:String>
+
+</ResourceDictionary>

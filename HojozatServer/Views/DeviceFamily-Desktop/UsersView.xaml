@@ -1,0 +1,873 @@
+﻿<Page
+    x:Class="HojozatServer.Views.DeviceFamily_Desktop.UsersView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Views.DeviceFamily_Desktop"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:models="using:HojozatServer.Models"
+    xmlns:conv="using:HojozatServer.Converters" 
+    xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart" 
+    xmlns:teleChar="using:Telerik.Charting"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:date="using:System"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loading="Page_Loading">
+
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/Icons/UsersViewIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/ControlsBrushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <conv:DateToStringConverter x:Key="DateToStringConv"></conv:DateToStringConverter>
+            <conv:VerifiedConverter x:Key="VeriConv"></conv:VerifiedConverter>
+           
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <controls:MasterDetailsView x:Name="usersMasterDetails"
+                                    Style="{StaticResource MasterDetailsStyle}"
+                                    ItemContainerStyle="{StaticResource ListViewItemStyle}" 
+                                    SelectionChanged="usersMasterDetails_SelectionChanged">
+           
+            <!--The content of details when no selection on any item in the master-->
+            <controls:MasterDetailsView.NoSelectionContentTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                        <!--The Image of no user details-->
+                        <Image Style="{StaticResource EmptyDetailsImageStyle}"
+                               Source="{StaticResource EmptyUserDetailsImage}">
+                        </Image>
+
+                        <!--text explain to the user what he must do (Enter on any country to see the cities)-->
+                        <TextBlock x:Uid="/UsersViewStrings/txtEmptyDetails"
+                                   Style="{StaticResource SubtitleTextBlockStyle}"
+                                   Margin="0 20 0 0"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+
+            </controls:MasterDetailsView.NoSelectionContentTemplate>
+
+            <!--The template for all items in master section-->
+            <controls:MasterDetailsView.ItemTemplate>
+                <DataTemplate x:DataType="models:User">
+                    <StackPanel 
+                        Background="Transparent"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+
+                        <!--Image of the user-->
+                        <controls:ImageEx 
+                            Style="{StaticResource ItemImageExStyle}"
+                            VerticalAlignment="Center"
+                            CornerRadius="2">
+                            <controls:ImageEx.Source>
+                                <BitmapImage UriSource="{x:Bind ImagePath}"/>
+                            </controls:ImageEx.Source>
+                        </controls:ImageEx>
+
+                        <!--Name of the user-->
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                   Margin="20 0 0 0"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+
+            </controls:MasterDetailsView.ItemTemplate>
+
+            <!--The template for what details will be have-->
+           <controls:MasterDetailsView.DetailsTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <ScrollViewer>
+                            <StackPanel x:Name="mainUserDetails"
+                                        Orientation="Vertical"
+                                        Style="{StaticResource MainStackPanelDetailsStyle}">
+
+                                <!--Create object and make properties' of controls bound from it (User Details data)-->
+                                <StackPanel.DataContext>
+                                    <models:UserDetails></models:UserDetails>
+                                </StackPanel.DataContext>
+
+                                <!--this stackpanel contains on user's image and profile information-->
+                                <StackPanel x:Name="userProfileContainer"
+                                        Style="{StaticResource DetailsStackPanelStyle}" 
+                                        Orientation="Horizontal">
+
+                                    <!--Image of user-->
+                                    <controls:ImageEx Style="{StaticResource ProfileImageExStyle}"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      CornerRadius="200"
+                                                      Margin="0 0 28 0">
+                                        <controls:ImageEx.Source>
+                                            <BitmapImage UriSource="{Binding UserProfile.ImagePath}"/>
+                                        </controls:ImageEx.Source>
+                                    </controls:ImageEx>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Title of this section (Profile)-->
+                                        <StackPanel Grid.Row="0"
+                                                Grid.Column="1"
+                                                Orientation="Horizontal">
+
+                                            <Image Style="{StaticResource TitleImageStyle}"
+                                               Source="{StaticResource UserProfile}"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtHeaderProfile"
+                                                   Style="{StaticResource SubtitleTextBlockStyle}"
+                                                   Margin="12 0 0 0"/>
+                                        </StackPanel>
+
+                                        <!--Contains on user profile information-->
+                                        <Grid Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0 20 0 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Name of user-->
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource UserName}"
+                                                  Grid.Row="0"
+                                                  Grid.Column="0"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtName"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Margin="12 0 0 0"/>
+                                            <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="0"
+                                                  Grid.Column="2"
+                                                  Text="{Binding UserProfile.Name}"
+                                                  Margin="12 0 0 0"/>
+
+                                            <!--email of user-->
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource UserEmail}"
+                                                  Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtEmail"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text="Email: "
+                                                   Margin="12 32 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   Text="{Binding UserProfile.Email}"
+                                                   Margin="12 32 0 0"/>
+
+                                            <!--Phone numer of user-->
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource UserPhoneNumber}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtPhoneNumber"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                            <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="2"
+                                                  Grid.Column="2"
+                                                  Text="{Binding UserProfile.PhoneNumber}"
+                                                  Margin="12 32 0 0"/>
+
+                                            <!--Date join of user-->
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource UserDateJoin}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtDateJoin"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                            <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="3"
+                                                  Grid.Column="2"
+                                                  Text="{Binding UserProfile.DateJoin,Converter={StaticResource DateToStringConv}}"
+                                                  Margin="12 32 0 0"/>
+
+                                            <!--Verified status of user-->
+                                            <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                  Glyph="{StaticResource UserVerified}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="0"
+                                                  Margin="0 32 0 0"/>
+                                            <TextBlock x:Uid="/UsersViewStrings/txtVerified"
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="1"
+                                                  Margin="12 32 0 0"/>
+                                            <TextBlock 
+                                                  Style="{StaticResource BodyTextBlockStyle}"
+                                                  Grid.Row="4"
+                                                  Grid.Column="2"
+                                                  Text="{Binding UserProfile.Verified, Converter={StaticResource VeriConv}}"
+                                                  Margin="12 32 0 0"/>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+
+                                <!--Contains on Charts of booking and payment for current and last year and Average Booking and 
+                                payments per month and year and the total for both-->
+                                <Grid Style="{StaticResource DetailsGridStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Activity header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Stretch">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                           Source="{StaticResource UserActivity}"/>
+                                        <TextBlock x:Uid="/UsersViewStrings/txtActivity"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                    </StackPanel>
+
+                                    <!--Charts for Bookings and payments for current and last year-->
+                                    <Pivot  Margin="0 20 0 0" 
+                                            HorizontalAlignment="Stretch"
+                                            Grid.Row="1">
+                                        
+                                        <!--Bookings Averages chart section-->
+                                        <PivotItem>
+                                            <PivotItem.Header>
+                                                <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                           x:Uid="/UsersViewStrings/txtBookings"/>
+                                            </PivotItem.Header>
+                                            
+                                            <ScrollViewer
+                                                  HorizontalScrollMode="Enabled"
+                                                  VerticalScrollBarVisibility="Disabled">
+                                                <StackPanel 
+                                                       HorizontalAlignment="Stretch"
+                                                       Orientation="Horizontal"
+                                                       Margin="0 20 0 0">
+
+                                                    <!--User activty of bookings for currunt year-->
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock x:Uid="/UsersViewStrings/txtActivityCurrentYear"
+                                                             Style="{StaticResource BodyTextBlockStyle}"
+                                                              Margin="8 0 0 0">
+                                                        </TextBlock>
+
+                                                        <telerik:RadCartesianChart x:Name="userActivityCurrentYearBookings" 
+                                                                           PaletteName="DefaultDark"
+                                                                           Width="300"
+                                                                           Height="260"
+                                                                           Margin="0 12 0 0">
+                                                            <telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:CategoricalAxis/>
+                                                            </telerik:RadCartesianChart.HorizontalAxis>
+                                                            <telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:LinearAxis/>
+                                                            </telerik:RadCartesianChart.VerticalAxis>
+                                                            <telerik:RadCartesianChart.Grid>
+                                                                <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                            </telerik:RadCartesianChart.Grid>
+
+                                                            <telerik:SplineSeries 
+                                                                      ItemsSource="{Binding UserActivity.UserActivityCurrentYear}"
+                                                                      CombineMode="Stack">
+                                                                <telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Bookings"/>
+                                                                </telerik:SplineSeries.ValueBinding>
+                                                                <telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                </telerik:SplineSeries.CategoryBinding>
+                                                                <telerik:SplineSeries.PointTemplate>
+                                                                    <DataTemplate>
+                                                                        <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                                                    </DataTemplate>
+                                                                </telerik:SplineSeries.PointTemplate>
+                                                            </telerik:SplineSeries>
+
+                                                        </telerik:RadCartesianChart>
+                                                    </StackPanel>
+
+                                                    <!--User activty of bookings for last year-->
+                                                    <StackPanel Orientation="Vertical"
+                                                        Margin="24 0 0 0">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock x:Uid="/UsersViewStrings/txtActivityLastYear"
+                                                                      Style="{StaticResource BodyTextBlockStyle}">
+                                                            </TextBlock>
+
+                                                            <telerik:RadCartesianChart x:Name="userActivityLastYearBookings" 
+                                                                                   PaletteName="DefaultDark"
+                                                                                   Width="300"
+                                                                                   Height="260"
+                                                                                   Margin="0 12 0 0">
+
+                                                                <telerik:RadCartesianChart.HorizontalAxis>
+                                                                    <telerik:CategoricalAxis/>
+                                                                </telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:RadCartesianChart.VerticalAxis>
+                                                                    <telerik:LinearAxis/>
+                                                                </telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:RadCartesianChart.Grid>
+                                                                    <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                                </telerik:RadCartesianChart.Grid>
+
+                                                                <telerik:SplineSeries x:Name="UserActivityLastYearBookings"
+                                                                      ItemsSource="{Binding UserActivity.UserActivityLastYear}" 
+                                                                      CombineMode="Stack">
+                                                                    <telerik:SplineSeries.ValueBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Bookings"/>
+                                                                    </telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:SplineSeries.CategoryBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                    </telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:SplineSeries.PointTemplate>
+                                                                        <DataTemplate>
+                                                                            <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="Orange"/>
+                                                                        </DataTemplate>
+                                                                    </telerik:SplineSeries.PointTemplate>
+                                                                </telerik:SplineSeries>
+
+                                                            </telerik:RadCartesianChart>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ScrollViewer>
+
+                                        </PivotItem>
+
+                                        <PivotItem >
+                                            <PivotItem.Header>
+                                                <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                           
+                                                            x:Uid="/UsersViewStrings/txtPayments"/>
+                                            </PivotItem.Header>
+
+                                            <ScrollViewer
+                                                  HorizontalScrollMode="Enabled"
+                                                  VerticalScrollBarVisibility="Disabled">
+                                                <StackPanel
+                                                       HorizontalAlignment="Stretch"
+                                                       Orientation="Horizontal"
+                                                       Margin="0 20 0 0">
+
+                                                    <!--User activty of bookings for currunt year-->
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock x:Uid="/UsersViewStrings/txtActivityCurrentYear"
+                                                             Style="{StaticResource BodyTextBlockStyle}"
+                                                              Margin="8 0 0 0">
+                                                        </TextBlock>
+
+                                                        <telerik:RadCartesianChart x:Name="userActivityCurrentYearPayments" 
+                                                                           PaletteName="DefaultDark"
+                                                                           Width="300"
+                                                                           Height="260"
+                                                                           Margin="0 12 0 0">
+                                                            <telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:CategoricalAxis/>
+                                                            </telerik:RadCartesianChart.HorizontalAxis>
+                                                            <telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:LinearAxis/>
+                                                            </telerik:RadCartesianChart.VerticalAxis>
+                                                            <telerik:RadCartesianChart.Grid>
+                                                                <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                            </telerik:RadCartesianChart.Grid>
+
+                                                            <telerik:SplineSeries 
+                                                                      ItemsSource="{Binding UserActivity.UserActivityCurrentYear}"
+                                                                      CombineMode="Stack">
+                                                                <telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Payments"/>
+                                                                </telerik:SplineSeries.ValueBinding>
+                                                                <telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                </telerik:SplineSeries.CategoryBinding>
+                                                                <telerik:SplineSeries.PointTemplate>
+                                                                    <DataTemplate>
+                                                                        <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                                                    </DataTemplate>
+                                                                </telerik:SplineSeries.PointTemplate>
+                                                            </telerik:SplineSeries>
+
+                                                        </telerik:RadCartesianChart>
+                                                    </StackPanel>
+
+                                                    <!--User activty of bookings for last year-->
+                                                    <StackPanel Orientation="Vertical"
+                                                        Margin="24 0 0 0">
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock x:Uid="/UsersViewStrings/txtActivityLastYear"
+                                                                      Style="{StaticResource BodyTextBlockStyle}">
+                                                            </TextBlock>
+
+                                                            <telerik:RadCartesianChart x:Name="userActivityLastYearPayments" 
+                                                                                   PaletteName="DefaultDark"
+                                                                                   Width="300"
+                                                                                   Height="260"
+                                                                                   Margin="0 12 0 0">
+
+                                                                <telerik:RadCartesianChart.HorizontalAxis>
+                                                                    <telerik:CategoricalAxis/>
+                                                                </telerik:RadCartesianChart.HorizontalAxis>
+                                                                <telerik:RadCartesianChart.VerticalAxis>
+                                                                    <telerik:LinearAxis/>
+                                                                </telerik:RadCartesianChart.VerticalAxis>
+                                                                <telerik:RadCartesianChart.Grid>
+                                                                    <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                                                </telerik:RadCartesianChart.Grid>
+
+                                                                <telerik:SplineSeries x:Name="UserActivityLastYearPayments"
+                                                                      ItemsSource="{Binding UserActivity.UserActivityLastYear}" 
+                                                                      CombineMode="Stack">
+                                                                    <telerik:SplineSeries.ValueBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Payments"/>
+                                                                    </telerik:SplineSeries.ValueBinding>
+                                                                    <telerik:SplineSeries.CategoryBinding>
+                                                                        <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                                                    </telerik:SplineSeries.CategoryBinding>
+                                                                    <telerik:SplineSeries.PointTemplate>
+                                                                        <DataTemplate>
+                                                                            <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="Orange"/>
+                                                                        </DataTemplate>
+                                                                    </telerik:SplineSeries.PointTemplate>
+                                                                </telerik:SplineSeries>
+
+                                                            </telerik:RadCartesianChart>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </ScrollViewer>
+
+                                        </PivotItem>
+                                    </Pivot>
+                                   
+
+                                     <!--average bookings and payments per month and per year and the total of both-->
+                                    <StackPanel Orientation="Vertical"
+                                            Grid.Row="2"
+                                            Margin="0 40 0 0">
+
+                                        <!--Title of this section (Averages Bookings and payments)-->
+                                        <TextBlock x:Uid="/UsersViewStrings/txtBookingsPayments"
+                                               Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+
+                                        <!--Contains on Average bookings and payments per month and per year and total for both-->
+                                        <Grid Grid.Row="2"
+                                          Margin="0 32 0 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Bookings-->
+                                            <StackPanel Orientation="Horizontal"
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Margin="20 16 0 0">
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                      Glyph="{StaticResource UserBooking}"/>
+                                                <TextBlock x:Uid="/UsersViewStrings/txtBookings"
+                                                       Style="{StaticResource BodyTextBlockStyle}"
+                                                       Margin="12 0 0 0"/>
+                                            </StackPanel>
+
+                                            <!--Payments-->
+                                            <StackPanel Orientation="Horizontal"
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Margin="20 32 0 0">
+                                                <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                                      Glyph="{StaticResource UserPayment}"/>
+                                                <TextBlock x:Uid="/UsersViewStrings/txtPayments"
+                                                       Style="{StaticResource BodyTextBlockStyle}"
+                                                       Margin="12 0 0 0"/>
+                                            </StackPanel>
+
+                                            <!--Per Month-->
+                                            <TextBlock x:Uid="/UsersViewStrings/txtPerMonth"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Margin="36 0 0 0"/>
+                                            <!--Per year-->
+                                            <TextBlock x:Uid="/UsersViewStrings/txtPerYear"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="2"
+                                                   Margin="48 0 0 0"/>
+                                            <!--Total-->
+                                            <TextBlock x:Uid="/UsersViewStrings/txtTotal"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="0"
+                                                   Grid.Column="3"
+                                                   Margin="48 0 0 0"/>
+
+                                            <!--Bookings per month and per year and total-->
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Text="{Binding UserActivity.UserAverageActivity.BookingsPerMonth}"
+                                                   Margin="36 16 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="2"
+                                                   Text="{Binding UserActivity.UserAverageActivity.BookingsPerYear}"
+                                                   Margin="48 16 0 0"/>
+                                            <TextBlock
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="1"
+                                                   Grid.Column="3"
+                                                   Text="{Binding UserActivity.UserAverageActivity.TotalBookings}"
+                                                   Margin="48 16 0 0"/>
+
+                                            <!--Payments per month and per year and total-->
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Text="{Binding UserActivity.UserAverageActivity.PaymentsPerMonth}"
+                                                   Margin="36 32 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="2"
+                                                   Text="{Binding UserActivity.UserAverageActivity.PaymentsPerYear}"
+                                                   Margin="48 32 0 0"/>
+                                            <TextBlock 
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Grid.Row="2"
+                                                   Grid.Column="3"
+                                                   Text="{Binding UserActivity.UserAverageActivity.TotalPayments}"
+                                                   Margin="48 32 0 0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!--User communication data-->
+                                <Grid Style="{StaticResource DetailsGridStyle}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!--Communication header for this section-->
+                                    <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal">
+                                        <Image Style="{StaticResource TitleImageStyle}"
+                                           Source="{StaticResource UserCommunication}"/>
+                                        <TextBlock x:Uid="/UsersViewStrings/txtCommunication"
+                                               Style="{StaticResource SubtitleTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+                                    </StackPanel>
+
+                                    <!--Comments && Ratings-->
+                                    <ScrollViewer Grid.Row="1">
+                                        <StackPanel HorizontalAlignment="Stretch"
+                                                Orientation="Horizontal"
+                                                Margin="0 20 0 0">
+
+                                            <!--Comments-->
+                                            <StackPanel Orientation="Vertical">
+
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                                              Glyph="{StaticResource UserComment}"/>
+                                                    <TextBlock Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       x:Uid="/UsersViewStrings/txtComments"
+                                                       Margin="12 0 0 0"/>
+                                                </StackPanel>
+
+                                                <ListView x:Name="userComments"
+                                                      ItemsSource="{Binding UserCommunication.UserComments}"
+                                                      SelectionMode="None"
+                                                      Width="300"
+                                                      Height="400"
+                                                      Margin="0 12 0 0">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate x:DataType="models:UserComment">
+                                                            <Grid Margin="0 0 0 12"
+                                                                  BorderBrush="Gray"
+                                                                  BorderThickness="0 0 0 0.5">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+
+                                                                <!--Hotel Name-->
+                                                                <StackPanel Orientation="Horizontal"
+                                                                            Grid.Row="0">
+                                                                    <TextBlock x:Uid="/UsersViewStrings/txtHotelName"
+                                                                           Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                           HorizontalAlignment="Left"/>
+                                                                    <TextBlock Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                           Margin="4 0 0 0"
+                                                                           Text="{x:Bind HotelName}"
+                                                                           Foreground="#FF9676B8"
+                                                                           HorizontalAlignment="Left"/>
+                                                                </StackPanel>
+                                                               
+                                                               
+                                                                <!--Comment context-->
+                                                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                                                       Grid.Row="1"
+                                                                       HorizontalAlignment="Left"
+                                                                       Margin="0 8 0 0"
+                                                                       Text="{x:Bind Comment}"/>
+
+                                                                <!--Comment date-->
+                                                                <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0 8 0 0">
+                                                                    <TextBlock x:Uid="/UsersViewStrings/txtCommentDate"
+                                                                               Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                               VerticalAlignment="Bottom"/>
+                                                                    <TextBlock Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                                       Grid.Row="2"
+                                                                       Margin="4 0 0 0"
+                                                                       Text="{x:Bind CommentDate,Converter={StaticResource DateToStringConv}}"/>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                            </StackPanel>
+
+                                            <!--Ratings-->
+                                            <!--<StackPanel x:Name="userRatingsCommentsContainer" 
+                                                    Orientation="Vertical"
+                                                    Margin="100 0 0 0">
+                                                <TextBlock x:Uid="/UsersViewStrings/txtRatings"
+                                                       Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                       Margin="8 0 0 0"/>
+
+                                                -->
+                                            <!--<telerik:RadCartesianChart PaletteName="DefaultDark"
+                                                       Width="400"
+                                                       Height="200">
+                                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                                        <telerik:LinearAxis/>
+                                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                                    <telerik:RadCartesianChart.VerticalAxis>
+                                                        <telerik:CategoricalAxis/>
+                                                    </telerik:RadCartesianChart.VerticalAxis>
+                                                    <telerik:RadCartesianChart.Grid>
+                                                        <telerik:CartesianChartGrid MajorLinesVisibility="X" StripLinesVisibility="X"/>
+                                                    </telerik:RadCartesianChart.Grid>
+                                                    <telerik:RadCartesianChart.Series>
+                                                        <telerik:BarSeries>
+                                                            <teleChar:CategoricalDataPoint Category="Star(1)" Value="{Binding UserCommunication.UserSocial.OneStar}" />
+                                                            <teleChar:CategoricalDataPoint Category="Star(2)" Value="{Binding UserCommunication.UserSocial.TwoStar}" />
+                                                            <teleChar:CategoricalDataPoint Category="Star(3)" Value="{Binding UserCommunication.UserSocial.ThreeStar}" />
+                                                            <teleChar:CategoricalDataPoint Category="Star(4)" Value="{Binding UserCommunication.UserSocial.FourStar}" />
+                                                            <teleChar:CategoricalDataPoint Category="Star(5)" Value="{Binding UserCommunication.UserSocial.FiveStar}" />
+                                                        </telerik:BarSeries>
+                                                    </telerik:RadCartesianChart.Series>
+                                                </telerik:RadCartesianChart>-->
+                                            <!--
+                                            </StackPanel>-->
+
+                                            <!--Favourites and History-->
+                                            <StackPanel Orientation="Vertical"
+                                            Grid.Row="2"
+                                            Margin="40 0 0 0">
+                                                <TextBlock x:Uid="/UsersViewStrings/txtFavouritesHistory"
+                                               Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                               Margin="12 0 0 0"/>
+
+                                                <!--Favourites-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                              Glyph="{StaticResource UserFavourite}"
+                                              Margin="12 30 0 0"/>
+                                                    <TextBlock x:Uid="/UsersViewStrings/txtFavourites"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                               Margin="12 28 0 0"/>
+
+                                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                               Text="{Binding UserCommunication.UserSocial.Favourites}"
+                                               Margin="12 30 0 0"/>
+                                                </StackPanel>
+
+                                                <!--History-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Style="{StaticResource SmallFontIconStyle}" 
+                                              Glyph="{StaticResource UserHistory}"
+                                              Margin="12 30 0 0"/>
+                                                    <TextBlock x:Uid="/UsersViewStrings/txtHistory"
+                                               Style="{StaticResource BodyTextBlockStyle}"
+                                               Margin="12 28 0 0"/>
+
+                                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                               Text="{Binding UserCommunication.UserSocial.History}"
+                                               Margin="12 30 0 0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                                
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <controls:Loading x:Name="loadingUserDetailsData"
+                                          Style="{StaticResource LoadingDataStyle}"/>
+
+                        <controls:Loading x:Name="networkingIssueConnDetails"
+                                          Style="{StaticResource LoadingNetworkIssueStyle}"/>
+                    </Grid>
+                </DataTemplate>
+            </controls:MasterDetailsView.DetailsTemplate>
+
+            <!-- of master's header for making search for users-->
+            <controls:MasterDetailsView.MasterHeaderTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+
+                        <StackPanel Orientation="Horizontal" Margin="40 0 0 8">
+                            <FontIcon x:Name="networkIssueIcon"
+                                    Style="{StaticResource CaptionFontIconStyle}"
+                                    Glyph="{StaticResource NetworkIssueIcon}"
+                                    HorizontalAlignment="Left"
+                                    Grid.Row="2"
+                                    Margin="20 10 0 0"
+                                    Visibility="Collapsed"
+                                    VerticalAlignment="Top"
+                                    Foreground="IndianRed"
+                                    extensions:VisualExtensions.CenterPoint="50,50,0">
+
+                                <animations:Implicit.ShowAnimations>
+                                    <animations:OpacityAnimation From="0" To="1" Duration="0:0:1"/>
+                                </animations:Implicit.ShowAnimations>
+
+                                <animations:Implicit.HideAnimations>
+                                    <animations:OpacityAnimation To="0" Duration="0:0:0.5"/>
+                                </animations:Implicit.HideAnimations>
+
+                            </FontIcon>
+                            <TextBlock x:Name="txtNetworkIssue"
+                                   x:Uid="/MainViewStrings/txtNetworkIssueMessage"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Grid.Row="2"
+                                   Margin="8 8 0 0"
+                                   VerticalAlignment="Top"
+                                   Foreground="IndianRed"
+                                   Visibility="Collapsed"
+                                   extensions:VisualExtensions.CenterPoint="50,50,0">
+                                   <animations:Implicit.ShowAnimations>
+                                       <animations:OpacityAnimation From="0" To="1" Duration="0:0:1"/>
+                                   </animations:Implicit.ShowAnimations>
+                        
+                                   <animations:Implicit.HideAnimations>
+                                       <animations:OpacityAnimation To="0" Duration="0:0:0.5"/>
+                                   </animations:Implicit.HideAnimations>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="20 0 0 0 ">
+                            <Image Style="{StaticResource TitleImageStyle}"
+                                   Source="{StaticResource UserSearchImage}"/>
+
+                            <AutoSuggestBox x:Name="txtSearchUsers"
+                                        Grid.Column="1"
+                                        Width="252"
+                                        x:Uid="/UsersViewStrings/txtSearchUsers"
+                                        BorderThickness="0 0 0 2"
+                                        CornerRadius="2"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Margin="20 0 0 0"
+                                        Background="Transparent"
+                                        QuerySubmitted="txtSearchUsers_QuerySubmitted"
+                                        KeyUp="txtSearchUsers_KeyUp">
+                            </AutoSuggestBox>
+                        </StackPanel>
+
+                    </StackPanel>
+                </DataTemplate>
+            </controls:MasterDetailsView.MasterHeaderTemplate>
+
+            <!--Animation for items in master list-->
+            <controls:MasterDetailsView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </controls:MasterDetailsView.ItemContainerTransitions>
+
+        </controls:MasterDetailsView>
+
+        <controls:Loading x:Name="loadingUsersData"
+                          Style="{StaticResource LoadingDataStyle}"/>
+
+        <controls:Loading x:Name="networkingIssueConnecting"
+                          Style="{StaticResource LoadingNetworkIssueStyle}"/>
+    </Grid>
+</Page>

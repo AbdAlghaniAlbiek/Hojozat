@@ -1,0 +1,10 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Icons">
+
+    <x:String x:Key="UsersFeedback">ms-appx:///Assets/Images/FeedbackViewImages/UsersFeedback_20px.png</x:String>
+
+    <x:String x:Key="BrandsFeedback">ms-appx:///Assets/Images/FeedbackViewImages/BrandsFeedback_20px.png</x:String>
+
+</ResourceDictionary>

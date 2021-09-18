@@ -1,0 +1,122 @@
+﻿<Page
+    x:Class="HojozatServer.Views.DeviceFamily_Desktop.HotelsViews.HotelsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Views.DeviceFamily_Desktop.HotelsViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loading="Page_Loading">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/ControlsBrushes.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Icons/HotelsViewIcons.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="NavigationViewDefaultPaneBackgroundColorLight">#FFFFFFFF</Color>
+            <Color x:Key="NavigationViewDefaultPaneInActiveBackgroundColorLight">#FFFFFFFF</Color>
+
+            <Color x:Key="NavigationViewDefaultPaneBackgroundColorDark">#FF242424</Color>
+            <Color x:Key="NavigationViewDefaultPaneInActiveBackgroundColorDark">#FF242424</Color>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <AcrylicBrush x:Key="NavigationViewTopPaneBackground"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource NavigationViewDefaultPaneBackgroundColorLight}"
+                          FallbackColor="{StaticResource NavigationViewDefaultPaneInActiveBackgroundColorLight}"
+                          TintOpacity="0.6"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <AcrylicBrush x:Key="NavigationViewTopPaneBackground"
+                          BackgroundSource="HostBackdrop"
+                          TintColor="{StaticResource NavigationViewDefaultPaneBackgroundColorDark}"
+                          FallbackColor="{StaticResource NavigationViewDefaultPaneInActiveBackgroundColorDark}"
+                          TintOpacity="0.6"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Style="{StaticResource MainGridStyle}">
+        
+        <NavigationView  x:Name="mainHotelsHostTypesNavigation"
+                     PaneDisplayMode="Top"
+                     IsBackButtonVisible="Collapsed" 
+                     SelectionFollowsFocus="Enabled"
+                     IsSettingsVisible="False"
+                     ItemInvoked="mainHotelsHostTypesNavigation_ItemInvoked">
+
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:Name="txtSearchHotels"
+                                Width="252"
+                                x:Uid="/HotelsViewStrings/txtHotelSearch"
+                                BorderThickness="0 0 0 2"
+                                CornerRadius="2"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Margin="20 0 0 0"
+                                Background="Transparent"
+                                QuerySubmitted="txtSearchBrands_QuerySubmitted"
+                                KeyUp="txtSearchBrands_KeyUp">
+                </AutoSuggestBox>
+            </NavigationView.AutoSuggestBox>
+
+            <NavigationView.Resources>
+                <ResourceDictionary>
+                    <AcrylicBrush x:Key="NavigationViewExpandedPaneBackground"
+                  BackgroundSource="HostBackdrop"
+                  TintColor="Gray"
+                  TintOpacity="0.6"
+                  FallbackColor="Black"/>
+                </ResourceDictionary>
+            </NavigationView.Resources>
+
+            <!--Normal hotels section-->
+            <NavigationView.MenuItems>
+                <NavigationViewItem Tag="NormalHotels">
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Style="{StaticResource TitleImageStyle}" Source="{StaticResource NormalHotels}"/>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Normal" Margin="12 0 0 0"/>
+                        </StackPanel>
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+
+                <!--Medium hotels section-->
+                <NavigationViewItem Tag="MediumHotels">
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Style="{StaticResource TitleImageStyle}" Source="{StaticResource MediumHotels}"/>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Medium" Margin="12 0 0 0"/>
+                        </StackPanel>
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+
+                <!--Super hotels section-->
+                <NavigationViewItem Tag="SuperHotels">
+                    <NavigationViewItem.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Style="{StaticResource TitleImageStyle}" Source="{StaticResource SuperHotels}"/>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Super" Margin="12 0 0 0"/>
+                        </StackPanel>
+                    </NavigationViewItem.Content>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <ScrollViewer>
+                <Frame x:Name="hotelsTypesContentFrame"
+                   NavigationFailed="hotelsTypesContentFrame_NavigationFailed"/>
+            </ScrollViewer>
+
+        </NavigationView>
+
+    </Grid>
+
+</Page>

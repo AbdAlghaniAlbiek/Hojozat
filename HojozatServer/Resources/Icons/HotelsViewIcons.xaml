@@ -1,0 +1,50 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Icons">
+
+    <x:String x:Key="NormalHotels">ms-appx:///Assets/Images/HotelsViewImages/NormalHotels_20px.png</x:String>
+    <x:String x:Key="MediumHotels">ms-appx:///Assets/Images/HotelsViewImages/MediumHotels_20px.png</x:String>
+    <x:String x:Key="SuperHotels">ms-appx:///Assets/Images/HotelsViewImages/SuperHotels_20px.png</x:String>
+    <x:String x:Key="BackIcon">&#xE76B;</x:String>
+
+
+    <x:String x:Key="Location">ms-appx:///Assets/Images/HotelsViewImages/Location_20px.png</x:String>
+
+    <x:String x:Key="HotelLoaction">&#xE707;</x:String>
+    <x:String x:Key="HotelRooms">&#xEC59;</x:String>
+    <x:String x:Key="HotelCheckin">&#xE761;</x:String>
+    <x:String x:Key="HotelCheckout">&#xE760;</x:String>
+    <x:String x:Key="HotelHostType">&#xE734;</x:String>
+    <x:String x:Key="HotelType">&#xE7C1;</x:String>
+    <x:String x:Key="HotelOwnedBy">&#xF094;</x:String>
+
+    <x:String x:Key="Photos">ms-appx:///Assets/Images/HotelsViewImages/Photos_20px.png</x:String>
+
+    <x:String x:Key="FacilitiesRules">ms-appx:///Assets/Images/HotelsViewImages/FacilitiesAndRules_20px.png</x:String>
+    <x:String x:Key="HotelRules">&#xEC08;</x:String>
+    <x:String x:Key="HotelFacilities">&#xE728;</x:String>
+
+    <x:String x:Key="Rooms">ms-appx:///Assets/Images/HotelsViewImages/Rooms_20px.png</x:String>
+    <x:String x:Key="HotelRoomPeople">&#xE716;</x:String>
+    <x:String x:Key="HotelRoomType">&#xE7C1;</x:String>
+    <x:String x:Key="HotelRoomPhotos">&#xEB9F;</x:String>
+    <x:String x:Key="HotelRoomSpace">&#xE809;</x:String>
+    <x:String x:Key="HotelRoomFeatures">&#xE71D;</x:String>
+    <x:String x:Key="HotelRoomBookingPrice">&#xE8EC;</x:String>
+    <x:String x:Key="HotelRoomFacilities">&#xE728;</x:String>
+
+    <x:String x:Key="Activity">ms-appx:///Assets/Images/HotelsViewImages/Activity_20px.png</x:String>
+    <x:String x:Key="HotelBookings">&#xEB4E;</x:String>
+    <x:String x:Key="HotelPayments">&#xE8EC;</x:String>
+
+    <x:String x:Key="UsersFeedback">ms-appx:///Assets/Images/HotelsViewImages/UsersFeedback_20px.png</x:String>
+    <x:String x:Key="HotelUsersFavourites">&#xE8E1;</x:String>
+    <x:String x:Key="HotelUsersComments">&#xE90A;</x:String>
+    <x:String x:Key="HotelUsersHistory">&#xECC5;</x:String>
+    <x:String x:Key="HotelUsersRatings">&#xF0E5;</x:String>
+
+    <x:String x:Key="NetworkIssueIcon">&#xEB5E;</x:String>
+
+
+</ResourceDictionary>

@@ -1,0 +1,826 @@
+﻿<Page
+    x:Class="HojozatServer.Views.DeviceFamily_Desktop.DashboardView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Views.DeviceFamily_Desktop"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    xmlns:models="using:HojozatServer.Models" 
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:conv="using:HojozatServer.Converters"
+    Loading="Page_Loading">
+
+    <Page.Resources>
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Resources/Icons/DashboardViewIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Resources/Brushes/ControlsBrushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="DetailsBackgroundColorLight">#E4E4E4</Color>
+            <Color x:Key="DetailsBackgroundColorDark">#151515</Color>
+
+            <Color x:Key="InAppNotificationBackgroundColorLight">#FFFFFF</Color>
+            <Color x:Key="InAppNotificationBackgroundColorDark">#333333</Color>
+
+
+            <conv:DateToStringConverter x:Key="DateToStringConv"></conv:DateToStringConverter>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorLight}"/>
+                    <SolidColorBrush x:Key="InAppNotificationBackgroundSolidColorBrush" Color="{StaticResource InAppNotificationBackgroundColorLight}"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="DetailsBackgroundSolidColorBrush" Color="{StaticResource DetailsBackgroundColorDark}"/>
+                    <SolidColorBrush x:Key="InAppNotificationBackgroundSolidColorBrush" Color="{StaticResource InAppNotificationBackgroundColorDark}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Style="{StaticResource MainGridStyle}">
+
+        <SplitView IsPaneOpen="True"
+                   DisplayMode="Inline"
+                   PanePlacement="Right"
+                   OpenPaneLength="365"
+                   PaneBackground="Transparent">
+            
+            <SplitView.Content>
+                
+                <!--Contains on Activity and top four brands and Average registeration-->
+                <StackPanel Name="mainDashboardStackPanel"
+                    Orientation="Vertical"
+                    Style="{StaticResource MainStackPanelDetailsStyle}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.HorizontalScrollMode="Disabled"
+                            ScrollViewer.VerticalScrollMode="Enabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                    <StackPanel.DataContext>
+                        <models:Dashboard/>
+                    </StackPanel.DataContext>
+
+                    <!--Dashboard Acitivity-->
+                    <StackPanel Orientation="Vertical"
+                    Style="{StaticResource DetailsStackPanelStyle}">
+
+                        <!--Activity Title-->
+                        <StackPanel Orientation="Horizontal">
+                            <Image Style="{StaticResource TitleImageStyle}"
+                           Source="{StaticResource DashboardActicity}"/>
+
+                            <TextBlock Text="Activity"
+                           Style="{StaticResource SubtitleAltTextBlockStyle}"
+                           Margin="12 0 0 0"/>
+                        </StackPanel>
+
+                        <!--Contains on Bookings and Profits charts-->
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0 20 0 0">
+
+                            <!--Profits chart-->
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                              Glyph="{StaticResource ProfitsIcon}"/>
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                Text="Profits"
+                                Margin="12 0 0 0"/>
+                                </StackPanel>
+
+                                <telerik:RadCartesianChart PaletteName="DefaultDark"
+                                            Width="300"
+                                            Height="200"
+                                            Margin="0 12 0 0">
+                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                        <telerik:CategoricalAxis/>
+                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                    <telerik:RadCartesianChart.VerticalAxis>
+                                        <telerik:LinearAxis/>
+                                    </telerik:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                    </telerik:RadCartesianChart.Grid>
+
+                                    <telerik:SplineSeries ItemsSource="{Binding Activity.Profits.profitsPerMonth}"
+                                          CombineMode="Stack">
+                                        <telerik:SplineSeries.ValueBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Profits"/>
+                                        </telerik:SplineSeries.ValueBinding>
+                                        <telerik:SplineSeries.CategoryBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                        </telerik:SplineSeries.CategoryBinding>
+                                        <telerik:SplineSeries.PointTemplate>
+                                            <DataTemplate>
+                                                <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                            </DataTemplate>
+                                        </telerik:SplineSeries.PointTemplate>
+                                    </telerik:SplineSeries>
+
+                                </telerik:RadCartesianChart>
+
+                            </StackPanel>
+
+                            <!--Bookings chart-->
+                            <StackPanel Orientation="Vertical"
+                                        Margin="40 0 0 0">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                              Glyph="{StaticResource BookingsIcon}"/>
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                Text="Bookings"
+                                Margin="12 0 0 0"/>
+                                </StackPanel>
+
+
+                                <telerik:RadCartesianChart PaletteName="DefaultDark"
+                                            Width="300"
+                                            Height="200"
+                                            Margin="0 12 0 0">
+                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                        <telerik:CategoricalAxis/>
+                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                    <telerik:RadCartesianChart.VerticalAxis>
+                                        <telerik:LinearAxis/>
+                                    </telerik:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="XY"/>
+                                    </telerik:RadCartesianChart.Grid>
+
+                                    <telerik:SplineSeries ItemsSource="{Binding Activity.Bookings.BookingsPerMonth}"
+                                          CombineMode="Stack">
+                                        <telerik:SplineSeries.ValueBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Bookings"/>
+                                        </telerik:SplineSeries.ValueBinding>
+                                        <telerik:SplineSeries.CategoryBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                        </telerik:SplineSeries.CategoryBinding>
+                                        <telerik:SplineSeries.PointTemplate>
+                                            <DataTemplate>
+                                                <Rectangle Width="8" Height="8" RadiusX="8" RadiusY="8" Fill="CornflowerBlue"/>
+                                            </DataTemplate>
+                                        </telerik:SplineSeries.PointTemplate>
+                                    </telerik:SplineSeries>
+
+                                </telerik:RadCartesianChart>
+
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!--Total Bookings and Profits-->
+                        <StackPanel Orientation="Vertical"
+                                    Margin="0 20 0 0">
+
+                            <!--Total profits-->
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                               Text="Total Profits: "/>
+
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                               Margin="12 0 0 0"
+                               Text="{Binding Activity.Profits.TotalProfits}"/>
+                            </StackPanel>
+
+                            <!--Total Bookings-->
+                            <StackPanel Orientation="Horizontal"
+                            Margin="0 12 0 0">
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                               Text="Total Bookings: "/>
+
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                               Margin="12 0 0 0"
+                               Text="{Binding Activity.Bookings.TotalBookings}"/>
+                            </StackPanel>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <!--Dashboard Average Registeration-->
+                    <StackPanel Orientation="Vertical"
+                    Style="{StaticResource DetailsStackPanelStyle}">
+
+                        <!--Average Registeration Title-->
+                        <StackPanel Orientation="Horizontal">
+                            <Image Style="{StaticResource TitleImageStyle}"
+                      Source="{StaticResource DashboardAverageRegisteration}"
+                       Margin="0 4 0 0"/>
+
+                            <TextBlock Text="Average Registeration"
+                           Style="{StaticResource SubtitleAltTextBlockStyle}"
+                           Margin="12 0 0 0"/>
+                        </StackPanel>
+
+                        <!--Contains on brands and users charts-->
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--Brands section-->
+                            <StackPanel Orientation="Vertical"
+                                Margin="0 20 0 0">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                              Glyph="{StaticResource BrandIcon}"/>
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                Text="Brands"
+                                Margin="12 0 0 0"/>
+                                </StackPanel>
+
+                                <telerik:RadCartesianChart PaletteName="DefaultDark"
+                                               Margin="0 8 0 0"
+                                               Width="300"
+                                               Height="200">
+                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                        <telerik:CategoricalAxis/>
+                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                    <telerik:RadCartesianChart.VerticalAxis>
+                                        <telerik:LinearAxis/>
+                                    </telerik:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="Y" StripLinesVisibility="Y"/>
+                                    </telerik:RadCartesianChart.Grid>
+                                    <telerik:BarSeries ItemsSource="{Binding AverageRegisteration.BrandsRegisteredPerMonth}">
+                                        <telerik:BarSeries.ValueBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="NewBrands"/>
+                                        </telerik:BarSeries.ValueBinding>
+                                        <telerik:BarSeries.CategoryBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                        </telerik:BarSeries.CategoryBinding>
+                                    </telerik:BarSeries>
+                                </telerik:RadCartesianChart>
+
+
+
+                            </StackPanel>
+
+                            <!--Users section-->
+                            <StackPanel Orientation="Vertical"
+                            Margin="40 20 0 0">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                              Glyph="{StaticResource UserIcon}"/>
+                                    <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                Text="Users"
+                                Margin="12 0 0 0"/>
+                                </StackPanel>
+
+                                <telerik:RadCartesianChart PaletteName="DefaultDark"
+                                               Margin="0 8 0 0"
+                                               Width="300"
+                                               Height="200">
+                                    <telerik:RadCartesianChart.HorizontalAxis>
+                                        <telerik:CategoricalAxis/>
+                                    </telerik:RadCartesianChart.HorizontalAxis>
+                                    <telerik:RadCartesianChart.VerticalAxis>
+                                        <telerik:LinearAxis/>
+                                    </telerik:RadCartesianChart.VerticalAxis>
+                                    <telerik:RadCartesianChart.Grid>
+                                        <telerik:CartesianChartGrid MajorLinesVisibility="Y" StripLinesVisibility="Y"/>
+                                    </telerik:RadCartesianChart.Grid>
+                                    <telerik:BarSeries ItemsSource="{Binding AverageRegisteration.UsersRegisteredPerMonth}">
+                                        <telerik:BarSeries.ValueBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="NewUsers"/>
+                                        </telerik:BarSeries.ValueBinding>
+                                        <telerik:BarSeries.CategoryBinding>
+                                            <telerik:PropertyNameDataPointBinding PropertyName="Month"/>
+                                        </telerik:BarSeries.CategoryBinding>
+                                    </telerik:BarSeries>
+                                </telerik:RadCartesianChart>
+
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <!--Dashboard Top four brands-->
+                    <StackPanel Orientation="Vertical"
+                    Style="{StaticResource DetailsStackPanelStyle}"
+                    Padding="0">
+
+                        <!--Top four brands Title-->
+                        <StackPanel Orientation="Horizontal"
+                        Margin="16 8 0 0">
+                            <Image Style="{StaticResource TitleImageStyle}"
+                      Source="{StaticResource DashboardTopFourBrands}"
+                       Margin="0 4 0 0"/>
+
+                            <TextBlock Text="Top Four Brands"
+                           Style="{StaticResource SubtitleAltTextBlockStyle}"
+                           Margin="12 0 0 0"/>
+                        </StackPanel>
+
+                        <!--list that contains on top four brands-->
+                        <ListView x:Name="topFourBrandsListView"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      Margin="0 20 0 0"
+                      Height="168"
+                      IsItemClickEnabled="True"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.HorizontalScrollMode="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollMode="Enabled"
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                      CornerRadius="20 20 0 0"
+                      SelectionMode="None"
+                      Background="{ThemeResource DetailsBackgroundSolidColorBrush}"
+                      ItemsSource="{Binding TopFourBrands}">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="models:DashboardTopFourBrands">
+                                    <StackPanel Orientation="Vertical"
+                                    Style="{StaticResource DetailsStackPanelStyle}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
+                                    Width="220"
+                                    Height="152"
+                                    Padding="8 8 0 0">
+
+                                        <!--Image and brand name-->
+                                        <StackPanel Orientation="Horizontal">
+                                            <controls:ImageEx Style="{StaticResource ItemImageExStyle}"
+                                                  Source="{x:Bind Image}"
+                                                  CornerRadius="50"/>
+                                            <TextBlock Text="{x:Bind Name}"
+                                           Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                           Margin="8 0 0 0"
+                                           VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!--Bookings-->
+                                        <StackPanel Orientation="Horizontal"
+                                        Margin="0 12 0 0">
+
+                                            <TextBlock Text="Bookings: "
+                                           Style="{StaticResource BodyTextBlockStyle}"
+                                           Margin="8 0 0 0"
+                                           VerticalAlignment="Center"/>
+
+                                            <TextBlock Text="{x:Bind Bookings}"
+                                           Style="{StaticResource BodyTextBlockStyle}"
+                                           Margin="8 0 0 0"
+                                           VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <!--Payments-->
+                                        <StackPanel Orientation="Horizontal"
+                                        Margin="0 12 0 0">
+
+                                            <TextBlock Text="Payments: "
+                                           Style="{StaticResource BodyTextBlockStyle}"
+                                           Margin="8 0 0 0"
+                                           VerticalAlignment="Center"/>
+
+                                            <TextBlock Text="{x:Bind Payments}"
+                                           Style="{StaticResource BodyTextBlockStyle}"
+                                           Margin="8 0 0 0"
+                                           VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                    </StackPanel>
+
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsStackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+
+                            <ListView.Transitions>
+                                <TransitionCollection>
+                                    <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                </TransitionCollection>
+                            </ListView.Transitions>
+                        </ListView>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </SplitView.Content>
+
+            <SplitView.Pane>
+                <!--Dashboard New brands and users-->
+                <StackPanel Orientation="Vertical"
+                    Style="{StaticResource DetailsStackPanelStyle}"
+                    VerticalAlignment="Top"
+                    Width="340"
+                    Height="680"
+                    Margin="0 16 24 0"
+                    Padding="0">
+
+                    <!--New members title-->
+                    <StackPanel Orientation="Horizontal"
+                        Margin="12 8">
+                        <Image Style="{StaticResource TitleImageStyle}"
+                      Source="{StaticResource DashboardNewMember}"/>
+
+                        <TextBlock Text="New members"
+                           Style="{StaticResource SubtitleAltTextBlockStyle}"
+                           Margin="12 0 0 0"/>
+
+
+                    </StackPanel>
+
+                    <!--pivot that contains on new brand and new users that are registered newly-->
+                    <Pivot Name="newBrandsUserPivot"
+                           SelectionChanged="newBrandsUserPivot_SelectionChanged">
+
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                   Glyph="{StaticResource BrandIcon}"/>
+                                    <TextBlock Text="New Brands" 
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="12 0 0 0"/>
+                                    <Ellipse x:Name="notifyNewBrand"
+                                     Width="8"
+                                     Height="8"
+                                     Margin="2 0 0 10"
+                                     Fill="IndianRed"
+                                     Visibility="Collapsed"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+
+                            <Grid>
+
+                                <!--list that contains on the new brands in Hajozat system-->
+                                <ListView x:Name="newBrandListView"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Margin="0 12 0 0"
+                                  Height="564"
+                                  IsItemClickEnabled="True"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.HorizontalScrollMode="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollMode="Enabled"
+                                  ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                                  CornerRadius="20 20 8 8 "
+                                  SelectionMode="None"
+                                  Background="{ThemeResource DetailsBackgroundSolidColorBrush}"
+                                  ItemsSource="{x:Bind NewBrands}">
+
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:BrandProfile">
+                                            <StackPanel Grid.Column="1"
+                                            Orientation="Vertical"
+                                            Style="{StaticResource DetailsStackPanelStyle}"
+                                            Margin="20 360 40 0"
+                                            Width="Auto"
+                                            Height="Auto"
+                                                MaxHeight="300">
+
+                                                <!--Image and Brand name-->
+                                                <StackPanel HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                                    <controls:ImageEx Style="{StaticResource ItemImageExStyle}"
+                                                      Source="{x:Bind ImagePath}"
+                                                      CornerRadius="50"/>
+
+                                                    <TextBlock Margin="12 0 0 0"
+                                                   Text="{x:Bind Name}"
+                                                   Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Email-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Email: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind Email}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Manager-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Manager: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind ManagerName}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Phone Number-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Phone Number: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind PhoneNumber}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Date Join-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Date Join: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind DateJoin, Converter={StaticResource DateToStringConv}}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+
+                                            </StackPanel>
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsStackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+
+                                    <ListView.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                        </TransitionCollection>
+                                    </ListView.Transitions>
+                                </ListView>
+
+                                <!--Button that refresh data in listview-->
+                                <Border Height="60"
+                                 Width="60"
+                                 Background="#9676B8"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 Margin="12"
+                                CornerRadius="50"
+                                extensions:Mouse.Cursor="Hand"
+                                Tapped="newBrandsRefButt_Tapped">
+                                    <FontIcon x:Name="newBrandsRefreshFontIcon"
+                                      Style="{StaticResource LargeFontIconStyle}"
+                                      Glyph="{StaticResource RefreshIcon}"
+                                      Height="20"
+                                      Width="20" RenderTransformOrigin="0.5 0.5">
+                                        <FontIcon.RenderTransform>
+                                            <RotateTransform x:Name="newBrandsRefreshFontIconAnim"/>
+                                        </FontIcon.RenderTransform>
+                                    </FontIcon>
+                                </Border>
+
+                                <!--Notification to notify server user that there is no new brands-->
+                                <controls:InAppNotification x:Name="noNewBrandsInfoMessage"
+                                    Style="{StaticResource InAppNotificationStyle}"
+                                    BorderBrush="#9676B8"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0 0 12 20">
+                                    <controls:InAppNotification.ContentTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch"
+                                            Orientation="Horizontal">
+
+                                                <TextBlock Text="No new brands"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Foreground="#9676B8"
+                                           Margin="8 0 0 0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </controls:InAppNotification.ContentTemplate>
+                                </controls:InAppNotification>
+
+                            </Grid>
+                        </PivotItem>
+
+                        <PivotItem>
+                            <PivotItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Style="{StaticResource SmallFontIconStyle}"
+                                   Glyph="{StaticResource UserIcon}"/>
+                                    <TextBlock Text="New Users" 
+                                       Style="{StaticResource BodyTextBlockStyle}"
+                                       Margin="12 0 0 0"/>
+                                    <Ellipse x:Name="notifyNewUser"
+                                     Width="8"
+                                     Height="8"
+                                     Margin="2 0 0 10"
+                                     Fill="IndianRed"
+                                     Visibility="Collapsed"/>
+                                </StackPanel>
+                            </PivotItem.Header>
+
+                            <Grid>
+                                <!--list that contains on the new brands in Hajozat system-->
+                                <ListView x:Name="newUsersListView"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Margin="0 12 0 0"
+                                  Height="564"
+                                  IsItemClickEnabled="True"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.HorizontalScrollMode="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.VerticalScrollMode="Enabled"
+                                  ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                                  CornerRadius="20 20 8 8"
+                                  SelectionMode="None"
+                                  Background="{ThemeResource DetailsBackgroundSolidColorBrush}"
+                                  ItemsSource="{x:Bind NewUsers}">
+
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="models:UserProfile">
+                                            <StackPanel Grid.Column="1"
+                                            Orientation="Vertical"
+                                            Style="{StaticResource DetailsStackPanelStyle}"
+                                            Margin="20 360 40 0"
+                                            Width="Auto"
+                                            Height="Auto"
+                                            MaxHeight="300">
+
+                                                <!--Image and Brand name-->
+                                                <StackPanel HorizontalAlignment="Left"
+                                                Orientation="Horizontal">
+                                                    <controls:ImageEx Style="{StaticResource ItemImageExStyle}"
+                                                      Source="{x:Bind ImagePath}"
+                                                      CornerRadius="50"/>
+
+                                                    <TextBlock Margin="12 0 0 0"
+                                                   Text="Brand Name"
+                                                   Style="{StaticResource SubtitleAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Email-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Email: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind Email}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Phone Number-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Phone Number: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind PhoneNumber}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <!--Date Join-->
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="Date Join: "
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+
+                                                    <TextBlock Margin="12 12 0 0"
+                                                   Text="{x:Bind DateJoin, Converter={StaticResource DateToStringConv}}"
+                                                   Style="{StaticResource CaptionAltTextBlockStyle}"
+                                                   VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                            </StackPanel>
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsStackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+
+                                    <ListView.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition IsStaggeringEnabled="True"/>
+                                        </TransitionCollection>
+                                    </ListView.Transitions>
+                                </ListView>
+
+                                <!--Button that refresh data in listview-->
+                                <Border  Height="60"
+                                 Width="60"
+                                 Background="#9676B8"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 Margin="12"
+                                CornerRadius="50"
+                                extensions:Mouse.Cursor="Hand"
+                                Tapped="newUsersRefButt_Tapped">
+                                    <FontIcon x:Name="newUsersRefreshFontIcon"
+                                      Style="{StaticResource LargeFontIconStyle}"
+                                      Glyph="{StaticResource RefreshIcon}"
+                                      Height="20"
+                                      Width="20" 
+                                      RenderTransformOrigin="0.5 0.5">
+                                        <FontIcon.RenderTransform>
+                                            <RotateTransform x:Name="newUsersRefreshFontIconAnim"/>
+                                        </FontIcon.RenderTransform>
+                                    </FontIcon>
+                                </Border>
+
+                                <!--Notification to notify server user that there is no new brands-->
+                                <controls:InAppNotification x:Name="noNewUsersInfoMessage"
+                                                    Style="{StaticResource InAppNotificationStyle}"
+                                                    Margin="0 0 12 20"
+                                                    BorderBrush="#9676B8"
+                                                    VerticalAlignment="Bottom"
+                                                    Background="{ThemeResource InAppNotificationBackgroundSolidColorBrush}">
+                                    <controls:InAppNotification.ContentTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Stretch"
+                                            HorizontalAlignment="Stretch"
+                                            Orientation="Horizontal">
+
+                                                <TextBlock Text="No new Users"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="8 0 0 0"
+                                           Foreground="#9676B8"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </controls:InAppNotification.ContentTemplate>
+                                </controls:InAppNotification>
+
+                            </Grid>
+                        </PivotItem>
+                    </Pivot>
+
+                    <!--Notification to notify user that he isn't connect to internet-->
+                    <controls:InAppNotification x:Name="newMembersMessageNetworkIssue"
+                                        Background="{ThemeResource InAppNotificationBackgroundSolidColorBrush}"
+                                        Style="{StaticResource InAppNotificationStyle}"
+                                        Margin="0 0 20 0">
+                        <controls:InAppNotification.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Stretch"
+                                   HorizontalAlignment="Stretch"
+                                    Orientation="Horizontal">
+
+                                    <FontIcon Style="{StaticResource CaptionFontIconStyle}"
+                                      Glyph="{StaticResource NetworkIssueIcon}"
+                                      HorizontalAlignment="Left"
+                                      Foreground="IndianRed"/>
+
+                                    <TextBlock x:Uid="/LoginViewStrings/networkIssueMessage"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Margin="8 0 0 0"
+                                       Foreground="IndianRed"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:InAppNotification.ContentTemplate>
+                    </controls:InAppNotification>
+
+                </StackPanel>
+
+            </SplitView.Pane>
+            
+        </SplitView>
+
+        <controls:Loading x:Name="loadingDashboardData"
+                          Style="{StaticResource LoadingDataStyle}"/>
+
+        <controls:Loading x:Name="networkingIssueConnecting"
+                          Style="{StaticResource LoadingNetworkIssueStyle}"/>
+    </Grid>
+
+
+</Page>

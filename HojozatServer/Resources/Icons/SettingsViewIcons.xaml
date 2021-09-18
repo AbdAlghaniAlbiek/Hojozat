@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HojozatServer.Resources.Icons">
+
+    <x:String x:Key="Profile">ms-appx:///Assets/Images/SettingsViewImages/Profile_20px.png</x:String>
+    <x:String x:Key="ServerUserEmail">&#xE715;</x:String>
+    <x:String x:Key="ServerUserPassword">&#xE8D7;</x:String>
+    <x:String x:Key="ServerUserName">&#xE77B;</x:String>
+    <x:String x:Key="ServerUserPhoneNumber">&#xE717;</x:String>
+    <x:String x:Key="ServerUserDateJoin">&#xE787;</x:String>
+    <x:String x:Key="ServerUserVerified">&#xE930;</x:String>
+    <x:String x:Key="ServerUserNotVerified">&#xEA39;</x:String>
+    <x:String x:Key="ServerUserShowPassword">&#xE890;</x:String>
+
+
+    <x:String x:Key="Theme">ms-appx:///Assets/Images/SettingsViewImages/Theme_20px.png</x:String>
+    <x:String x:Key="Languages">ms-appx:///Assets/Images/SettingsViewImages/Language_20px.png</x:String>
+    <x:String x:Key="PrivacyPolicy">ms-appx:///Assets/Images/SettingsViewImages/Privacy_Policy_20px.png</x:String>
+    <x:String x:Key="About">ms-appx:///Assets/Images/SettingsViewImages/About_20px.png</x:String>
+    <x:String x:Key="Sound">ms-appx:///Assets/Images/SettingsViewImages/Voice_20px.png</x:String>
+    
+</ResourceDictionary>
